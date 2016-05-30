@@ -13,3 +13,5 @@ gem 'json'
 gem 'rspec'
 
 gem 'coffee-script'
+
+gem 'bootstrap-sass'
