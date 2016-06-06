@@ -1,9 +1,4 @@
-<p>
-  The result from the search returned multiply results. Choose from one of them.
-  <%= @results.each_with_index { |val,index |"#{index + 1} #{val[:city]}, #{val[:country]}, #{val[:coord][:lon]}, #{val[:coord][:lat]}" } %>
+<p><% session[:result].each do |val| %>
+      <%= "#{val[:name]}, #{val[:country]}, #{val[:coord][:lat]}, #{val[:coord][:lon]}"%><br>
+  <% end %>
 </p>
-
-<form action="/result" method="post">
-  <input type="number" name="index">
-  <input type="submit">
-</form>

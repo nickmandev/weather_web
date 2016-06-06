@@ -1,7 +1,7 @@
 module WeatherWeb
   class Data
-    attr_accessor :results, :single_result, :multiple_results
-
+      attr_accessor :results, :city_id
+      attr_reader :final_result
     def initialize
       @results = []
       @common = WeatherApp::Common.new
@@ -15,18 +15,13 @@ module WeatherWeb
           @results << val
         end
       end
-      case
-         when @results.length == 1
-           single_result
-         else @results.length > 1
-           multiple_results
+      if @results.length == 1
+        single_result
       end
     end
 
     def multiple_results
-      @results.each_with_index do |data,index|
-        @multiple_results = "#{index + 1}" + ") #{data[:name]}, #{data[:country]}, - #{data[:coord][:lon]}, #{data[:coord][:lat]}"
-      end
+
     end
 
     def response_multiple_results(params)
@@ -42,7 +37,7 @@ module WeatherWeb
 
     def request_data
       data = @common.get_data(@city_id)
-      @single_result = "The weather in #{data[:name]} is #{data[:weather][0][:description]} and the temperature is #{data[:main][:temp]}C"
+      @final_result = "The weather in #{data[:name]} is #{data[:weather][0][:description]} and the temperature is #{data[:main][:temp]} C"
     end
   end
 end

@@ -1,9 +1,8 @@
 require "weather_web/version"
 require 'weather_app'
 require 'sinatra'
-require 'weather_web/index'
 require 'bootstrap-sass'
-require 'weather_web/data'
+Dir[File.dirname(__FILE__) + '/weather_web/*.rb'].each {|file| require file}
 module WeatherWeb
 
 
