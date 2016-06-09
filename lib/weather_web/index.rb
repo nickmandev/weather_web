@@ -21,6 +21,12 @@ module WeatherWeb
       erb :multiple_results
     end
 
+    post '/multiple_results' do
+      data = WeatherWeb::Data.new
+      data.multiple_results(params[:_id])
+      data.request_data
+    end
+
     get '/single_result' do
       session[:result]
       data = WeatherWeb::Data.new

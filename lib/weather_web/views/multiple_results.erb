@@ -1,4 +1,10 @@
-<p><% session[:result].each do |val| %>
-      <%= "#{val[:name]}, #{val[:country]}, #{val[:coord][:lat]}, #{val[:coord][:lon]}"%><br>
+<div><% session[:result].each  do |val| %>
+      <%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br>
   <% end %>
-</p>
+</div>
+
+<form action="/multiple_results" method="post">
+  <label>Input City</label>
+  <input type="text" name="_id">
+  <input type="submit">
+</form>
