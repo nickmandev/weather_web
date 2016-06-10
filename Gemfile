@@ -15,3 +15,5 @@ gem 'rspec'
 gem 'coffee-script'
 
 gem 'bootstrap-sass'
+
+gem 'sass'
