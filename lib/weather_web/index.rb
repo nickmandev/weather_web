@@ -1,6 +1,10 @@
 module WeatherWeb
   class Index < Sinatra::Base
-    enable :sessions
+   enable :sessions
+    register Sinatra::StaticAssets
+    register Sinatra::Reloader
+    set :root => File.dirname(__FILE__)
+    set :public_folder => File.join(root + '/public')
 
     get '/' do
       erb :index

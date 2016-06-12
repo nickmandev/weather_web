@@ -8,6 +8,10 @@ gem 'weather_app', :git => 'https://github.com/nickmandev/weather_app.git'
 
 gem 'sinatra'
 
+gem 'sinatra-static-assets'
+
+gem 'sinatra-contrib'
+
 gem 'json'
 
 gem 'rspec'

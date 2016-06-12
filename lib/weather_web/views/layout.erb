@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather WEB</title>
+    <meta name="author" content="NickMan">
+    <%= stylesheet_link_tag '/bootstrap/css/bootstrap.css' %>
+    <%= stylesheet_link_tag '/bootstrap/css/bootstrap-responsive.css' %>
+    <%= stylesheet_link_tag '/css/weather_web.css.scss' %>
+  </head>
+  <body>
+    <%= yield %>
+
+    <div class="navbar-fixed-bottom">
+      <p style="font-size: 18px">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
+    </div>
+    <%= javascript_script_tag '/bootstrap/css/bootstrap.js' %>
+  </body>
+</html>
