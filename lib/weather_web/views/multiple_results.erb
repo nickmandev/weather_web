@@ -1,10 +1,19 @@
-<div><% session[:result].each  do |val| %>
-      <%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br>
-  <% end %>
-</div>
-
-<form action="/multiple_results" method="post">
-  <label>Input City</label>
-  <input type="text" name="_id">
-  <input type="submit">
-</form>
+<body>
+  <div class="row">
+    <div class="span8">
+      <% session[:result].each  do |val| %>
+        <p id="text-style">
+          <%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br>
+        </p>
+      <% end %>
+      <div>
+        <form action="/multiple_results" method="post">
+          <div>
+          <input type="text" placeholder="Enter ID" name="_id" style="margin: 10px">
+          <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>

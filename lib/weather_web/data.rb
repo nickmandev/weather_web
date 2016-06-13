@@ -1,7 +1,7 @@
 module WeatherWeb
   class Data
-      attr_accessor :results, :city_id
-      attr_reader :final_result
+      attr_accessor :results, :city_id, :final_result
+
       def initialize
         @results = []
         @common = WeatherApp::Common.new

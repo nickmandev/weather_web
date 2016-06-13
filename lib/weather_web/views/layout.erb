@@ -6,13 +6,20 @@
     <meta name="author" content="NickMan">
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap.css' %>
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap-responsive.css' %>
-    <%= stylesheet_link_tag '/css/weather_web.css.scss' %>
+    <%= stylesheet_link_tag '/css/weather_web.css' %>
   </head>
   <body>
-    <%= yield %>
+  <%= yield %>
 
     <div class="navbar-fixed-bottom">
-      <p style="font-size: 18px">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
+      <div class="row-fluid">
+      <div class="span6">
+        <p><a href="/" class="btn btn-danger">Index</a></p>
+      </div>
+      <div class="pull-right">
+        <p style="font-size: 18px">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
+      </div>
+      </div>
     </div>
     <%= javascript_script_tag '/bootstrap/css/bootstrap.js' %>
   </body>

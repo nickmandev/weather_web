@@ -18,6 +18,7 @@ module WeatherWeb
         redirect ('/multiple_results')
       end
       data.request_data
+      erb :result
     end
 
     get '/multiple_results' do
@@ -29,15 +30,9 @@ module WeatherWeb
       data = WeatherWeb::Data.new
       data.multiple_results(params[:_id])
       data.request_data
+      erb :result
     end
 
-    get '/single_result' do
-      session[:result]
-      data = WeatherWeb::Data.new
-      data.single_result(session[:result])
-      data.request_data
-      erb :single_result
-    end
 
   end
 
