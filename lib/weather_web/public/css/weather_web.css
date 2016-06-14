@@ -11,4 +11,6 @@
 #text-style {
   font-family:  Helvetica, Arial, sans-serif;
   font-size: 16px;
+  margin: 10px;
+  color: indianred;
 }
