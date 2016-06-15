@@ -14,10 +14,6 @@ gem 'sinatra-contrib'
 
 gem 'json'
 
-gem 'rspec'
-
-gem 'coffee-script'
-
 gem 'bootstrap-sass'
 
-gem 'sass'
+gem 'devise'

@@ -1,5 +1,5 @@
 module WeatherWeb
-  class Data
+  class ForecastData
       attr_accessor :results, :city_id, :final_result
 
       def initialize

@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["nickmandev"]
   spec.email         = ["nickmandev@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = "Web version for WeatherApp"
+  spec.description   = "It can display the WeatherApp output in the web!"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 

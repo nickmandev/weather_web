@@ -1,2 +1,2 @@
 require 'weather_web'
-run Index
+run WeatherWeb::Index
