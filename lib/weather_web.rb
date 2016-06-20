@@ -3,7 +3,8 @@ require 'weather_app'
 require 'sinatra'
 require 'sinatra/static_assets'
 require 'sinatra/reloader'
-require 'devise'
+require 'aplication'
+
 Dir[File.dirname(__FILE__) + '/weather_web/*.rb'].each {|file| require file}
 
 module WeatherWeb

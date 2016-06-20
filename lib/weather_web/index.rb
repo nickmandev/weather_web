@@ -9,15 +9,17 @@ module WeatherWeb
 
      enable :sessions
 
-     enable :logging
+    configure do
 
-     set :root => File.dirname(__FILE__)
+      set :root => File.dirname(__FILE__)
 
-     set :public_folder => File.join(root + '/public')
+      set :public_folder => File.join(root + '/public')
 
-     set :show_exceptions, :after_handler
+      set :show_exceptions, :after_handler
 
+      set :template_engine, :erb
 
+    end
         get '/' do
           erb :index
         end

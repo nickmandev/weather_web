@@ -16,4 +16,4 @@ gem 'json'
 
 gem 'bootstrap-sass'
 
-gem 'devise'
+gem 'mysql2'
