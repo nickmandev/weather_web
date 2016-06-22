@@ -16,4 +16,8 @@ gem 'json'
 
 gem 'bootstrap-sass'
 
-gem 'mysql2'
+gem 'sqlite3'
+
+gem 'activerecord'
+
+gem 'bcrypt'

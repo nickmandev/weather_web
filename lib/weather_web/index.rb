@@ -64,5 +64,37 @@ module WeatherWeb
           session[:error]
           erb :error
         end
+
+        get '/signup' do
+          erb :signup
+        end
+
+        post '/signup' do
+          @user = User.new
+          @user.create(params[:user])
+          if true
+            redirect '/'
+          else
+            redirect '/login'
+          end
+        end
+
+        get '/login' do
+         erb :login
+        end
+
+        post '/login' do
+          @user = User.new
+          @user.login(params[:user])
+          if true
+            redirect '/'
+          else
+            redirect '/login'
+          end
+        end
+
+        post '/logout' do
+
+        end
   end
 end
