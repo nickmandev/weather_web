@@ -7,6 +7,8 @@ module WeatherWeb
 
      register Sinatra::Reloader
 
+     register Sinatra::SessionHelper
+
      enable :sessions
 
     configure do
@@ -70,12 +72,11 @@ module WeatherWeb
         end
 
         post '/signup' do
-          @user = User.new
-          @user.create(params[:user])
-          if true
-            redirect '/'
+          @user = User.new(params[:user])
+          if @user.save
+            redirect '/index', "Account Created!"
           else
-            redirect '/login'
+            redirect '/error', @errors = "There's a problem!"
           end
         end
 
@@ -84,17 +85,18 @@ module WeatherWeb
         end
 
         post '/login' do
-          @user = User.new
-          @user.login(params[:user])
-          if true
-            redirect '/'
+          @user = User.find_by(params[:user][:username])
+          if @user && @user.authenticate(params[:user][:password])
+            session[:current_user] = @user
+            session[:id] = @user.id
+            redirect '/', "Logged in!"
           else
-            redirect '/login'
+            redirect '/error', @errors = "Wrong username/password combination!"
           end
         end
 
         post '/logout' do
-
+            session[:id] = nil
         end
   end
 end

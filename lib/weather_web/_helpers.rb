@@ -5,5 +5,5 @@ module Sinatra
       session['current_user']
     end
   end
-  register current_user
+  register SessionHelper
 end
