@@ -14,7 +14,7 @@ gem 'sinatra-contrib'
 
 gem 'json'
 
-gem 'bootstrap-sass'
+gem 'bootstrap'
 
 gem 'sqlite3'
 

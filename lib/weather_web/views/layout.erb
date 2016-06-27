@@ -6,29 +6,28 @@
     <meta name="author" content="NickMan">
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap.css' %>
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap-responsive.css' %>
-    <%= stylesheet_link_tag '/css/weather_web.css' %>
-  </head>
-  <body>
-  <%= yield %>
-    <div class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="pull-left">
-           <% if session[:current_user] == nil? %>
-            <button class="btn btn-primary"><a href="/login">Log In</a></button>
-            <% end %>
-        </div>
-      </div>
+</head>
+<body>
+<%= yield %>
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="col-xs-6">
+      <p><a href="/" class="btn btn-danger">Weather</a></p>
     </div>
-     <div class="panel-footer">
-      <div class="row-fluid">
-      <div class="span6">
-        <p><a href="/" class="btn btn-info" style="margin-left: 10px;">Index</a></p>
-      </div>
+  </div>
+</div>
+<div class="navbar navbar-fixed-bottom">
+  <div class="container-fluid">
+    <div class="col-xs-6">
+      <p><a href="/" class="btn btn-info" style="margin-left: 10px;">Index</a></p>
+    </div>
+    <div class="col-xs-6">
       <div class="pull-right">
-        <p style="font-size: 18px;margin-right: 10px;">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
-      </div>
+        <p style="font-size: 18px;,margin-right: 10px;">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
       </div>
     </div>
-    <%= javascript_script_tag '/bootstrap/css/bootstrap.js' %>
-  </body>
+  </div>
+</div>
+    <%= javascript_include_tag '/bootstrap/js/bootstrap.js' %>
+</body>
 </html>
