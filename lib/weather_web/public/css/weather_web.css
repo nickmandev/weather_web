@@ -1,16 +1,26 @@
 .btn-lg {
-  height: 30px;
-  margin-left: 10px;
+    height: 30px;
+    margin-left: 10px;
 }
 
 .my-class {
-  margin-top: 5px;
-  text-align: center;
+    margin-top: 5px;
+    text-align: center;
 }
 
 #text-style {
-  font-family:  Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  margin: 10px;
-  color: indianred;
+    font-family:  Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 10px;
+    color: indianred;
+}
+
+.mrg30 {
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+.mrg10 {
+    margin: 10px;
+    padding: 5px;
 }
