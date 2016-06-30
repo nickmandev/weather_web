@@ -1,7 +1,7 @@
 module WeatherWeb
   class Index < Sinatra::Base
 
-     attr_accessor :data, :errors
+     attr_accessor :data, :errors, :current_user
 
      register Sinatra::StaticAssets
 
@@ -22,6 +22,13 @@ module WeatherWeb
       set :template_engine, :erb
 
     end
+
+     helpers do
+       def logged_in?
+         !!session[:user_id]
+       end
+     end
+
         get '/' do
           erb :index
         end
@@ -72,11 +79,13 @@ module WeatherWeb
         end
 
         post '/signup' do
+          session[:error]
           @user = User.new(params[:user])
           if @user.save
+            session[:user_id] = @user.id
             redirect '/index', "Account Created!"
           else
-            redirect '/error', @errors = "There's a problem!"
+            redirect '/error', session[:error] = "There's a problem!"
           end
         end
 
@@ -85,18 +94,23 @@ module WeatherWeb
         end
 
         post '/login' do
-          @user = User.find_by(params[:user][:username])
-          if @user && @user.authenticate(params[:user][:password])
-            session[:current_user] = @user
-            session[:id] = @user.id
+          user = User.find_by(:username => params[:user][:username])
+          if user && user.authenticate(params[:user][:password])
+            session[:current_user] = user
+            session[:user_id] = user.id
             redirect '/', "Logged in!"
           else
-            redirect '/error', @errors = "Wrong username/password combination!"
+            redirect '/error', session[:error] = "Wrong username/password combination!"
           end
         end
 
-        post '/logout' do
-            session[:id] = nil
+        get '/logout' do
+            if  session[:user_id] != nil
+                session.destroy
+                redirect '/'
+            else
+                redirect '/search'
+            end
         end
   end
 end
