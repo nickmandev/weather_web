@@ -34,7 +34,7 @@ module WeatherWeb
         end
 
         post '/result' do
-          @data = WeatherWeb::Data.new
+          @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           if params[:city].length == 0
             @errors = "ERROR(Enter a city name) To get back click on Index"
@@ -59,7 +59,7 @@ module WeatherWeb
         end
 
         post '/multiple_results' do
-          @data = WeatherWeb::Data.new
+          @data = WeatherWeb::ForecastData.new
           @data.multiple_results(params[:_id])
           if @data.request_data.nil?
             @errors = "There's something wrong with the connection please try again later!"

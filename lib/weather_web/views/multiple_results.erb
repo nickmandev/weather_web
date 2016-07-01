@@ -1,19 +1,10 @@
 <body>
-  <div class="row">
-    <div class="span8">
-      <% session[:result].each  do |val| %>
-        <p id="text-style">
-          <%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br>
-        </p>
-      <% end %>
-      <div>
-        <form action="/multiple_results" method="post">
-          <div>
-          <input type="text" placeholder="Enter ID" name="_id" style="margin: 10px">
-          <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-        </form>
-      </div>
-    </div>
+<form action="/multiple_results" method="post">
+  <div class="radio">
+    <% session[:result].each  do |val| %>
+        <label><input type="radio" name="_id" style="margin: 10px"><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
+    <% end %>
+    <button type="submit" class="btn btn-primary">Search</button>
   </div>
+</form>
 </body>
