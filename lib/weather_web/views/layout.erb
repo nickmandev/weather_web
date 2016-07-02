@@ -10,23 +10,26 @@
 </head>
 <body>
 <%= yield %>
-<div class="navbar navbar-default navbar-fixed-top">
-  <div class="row-fluid">
-    <div class="span3">
-      <p><a href="/" class="btn btn-danger">Weather</a></p>
-    </div>
-    <div class="pull-right">
-      <% if session[:current_user] == nil %>
-        <a href="/signup" class="btn btn-info">SignUP</a>
-        <a href="/login" class="btn btn-info">Login</a>
-      <% else %>
-          <p style="font-size: 16px">Signed in as: <%= session[:current_user].username %>
-          <a href="/logout" class="btn btn-danger" style="margin-left: 5px">Log Out</a></p>
-      <% end %>
+<nav class="navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="span3">
+        <p><a href="/" class="btn btn-danger">Weather</a></p>
+      </div>
+      <div class="pull-right">
+        <% if session[:current_user] == nil %>
+            <a href="/signup" class="btn btn-info">SignUP</a>
+            <a href="/login" class="btn btn-info">Login</a>
+        <% else %>
+            <p style="font-size: 16px">Signed in as: <%= session[:current_user].username %>
+              <a href="/logout" class="btn btn-danger" style="margin-left: 5px">Log Out</a></p>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
-<nav class="navbar navbar-fixed-bottom">
+
+</nav>
+<nav class="navbar-fixed-bottom">
   <div class="row-fluid">
     <div class="col-xs-6">
       <div class="pull-right mrg10">

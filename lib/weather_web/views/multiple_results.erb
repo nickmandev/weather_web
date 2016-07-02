@@ -1,10 +1,25 @@
 <body>
-<form action="/multiple_results" method="post">
-  <div class="radio">
-    <% session[:result].each  do |val| %>
-        <label><input type="radio" name="_id" style="margin: 10px"><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
-    <% end %>
-    <button type="submit" class="btn btn-primary">Search</button>
+  <div class="container-fluid mrg30">
+    <h3>Select from the list with results</h3>
+    <div class="pull-left">
+        <form action="/multiple_results" method="post">
+          <div class="row-fluid">
+            <div class="radio">
+              <% session[:result].each  do |val| %>
+                  <label><input type="radio" name="_id" value='<%=val[:_id]%>'><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
+            </div>
+              <% end %>
+              <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+        <form action="/favorites" method="post">
+          <div class="row-fluid">
+            <% session[:result].each  do |val| %>
+                <input type="hidden" name="id" value="<%= val[:_id] %>">
+                <button type="submit" class="btn-success">Add to Favorites</button>
+            <% end %>
+          </div>
+        </form>
+    </div>
   </div>
-</form>
 </body>
