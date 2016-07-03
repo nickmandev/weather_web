@@ -12,14 +12,6 @@
               <button type="submit" class="btn btn-primary">Search</button>
           </div>
         </form>
-        <form action="/favorites" method="post">
-          <div class="row-fluid">
-            <% session[:result].each  do |val| %>
-                <input type="hidden" name="id" value="<%= val[:_id] %>">
-                <button type="submit" class="btn-success">Add to Favorites</button>
-            <% end %>
-          </div>
-        </form>
     </div>
   </div>
 </body>

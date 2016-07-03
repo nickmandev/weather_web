@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <form action="/favorites" method="post">
+    <div class="row-fluid">
+      <% session[:result].each do |val| %>
+        <input type="hidden" name="fav_id" value="<%=val[:_id] %>">
+          <button type="submit" class="btn btn-info">Add</button>
+      <% end %>
+    </div>
+  </form>
+</div>

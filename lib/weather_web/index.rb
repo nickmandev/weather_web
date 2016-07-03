@@ -105,12 +105,28 @@ module WeatherWeb
         end
 
         get '/logout' do
-            if  session[:user_id] != nil
-                session.destroy
-                redirect '/'
-            else
-                redirect '/search'
-            end
+          if
+          session[:user_id] != nil
+            session.destroy
+            redirect '/'
+          else
+            redirect '/search'
+          end
+        end
+
+        get '/favorites' do
+          erb :favorites
+        end
+
+        post '/favorites' do
+          session[:current_user] = cur_usr
+          cur_usr.update_attributes('favorites', params[:fav_id])
+        end
+
+        post '/favorites_' do
+          @data = WeatherWeb::ForecastData.new
+          @data.get_city_id(params[:city])
+          session[:result] = @data.results
         end
   end
 end
