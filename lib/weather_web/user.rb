@@ -1,5 +1,6 @@
 module WeatherWeb
   class User < ActiveRecord::Base
     has_secure_password
+    has_many :favorites
   end
 end

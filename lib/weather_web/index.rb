@@ -1,6 +1,6 @@
 module WeatherWeb
   class Index < Sinatra::Base
-
+      require 'active_record'
      attr_accessor :data, :errors, :current_user
 
      register Sinatra::StaticAssets
@@ -28,7 +28,9 @@ module WeatherWeb
          !!session[:user_id]
        end
      end
-
+       def current_user
+         session[:user]
+       end
         get '/' do
           erb :index
         end
@@ -119,14 +121,15 @@ module WeatherWeb
         end
 
         post '/favorites' do
-          session[:current_user] = cur_usr
-          cur_usr.update_attributes('favorites', params[:fav_id])
+          cur_usr = session[:current_user]
+          fav = Favorites.new(params[:fav])
         end
 
         post '/favorites_' do
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           session[:result] = @data.results
+          erb :favorites_
         end
   end
 end

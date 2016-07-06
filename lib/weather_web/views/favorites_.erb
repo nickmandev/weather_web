@@ -1,8 +1,10 @@
-<div class="container-fluid">
+<div class="container-fluid mrg30">
   <form action="/favorites" method="post">
     <div class="row-fluid">
       <% session[:result].each do |val| %>
-        <input type="hidden" name="fav_id" value="<%=val[:_id] %>">
+        <label for="fav_id"><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
+          <input type="hidden" name="fav[id]" value="<%= val[:_id] %>">
+          <input type="hidden" name="fav[name]" value="<%= val[:name] %>">
           <button type="submit" class="btn btn-info">Add</button>
       <% end %>
     </div>
