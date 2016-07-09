@@ -123,6 +123,13 @@ module WeatherWeb
         post '/favorites' do
           cur_usr = session[:current_user]
           fav = Favorites.new(params[:fav])
+          fav.users_id = cur_usr.id
+          if fav.save
+            redirect '/favorites'
+          else
+            redirect '/error', session[:error] = "There's a problem!"
+          end
+
         end
 
         post '/favorites_' do
