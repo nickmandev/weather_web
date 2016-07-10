@@ -35,6 +35,7 @@ module WeatherWeb
           erb :index
         end
 
+
         post '/result' do
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
@@ -133,6 +134,7 @@ module WeatherWeb
         end
 
         post '/favorites_' do
+          session[:fav] = Favorites.where(user_id: current_user)
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           session[:result] = @data.results
