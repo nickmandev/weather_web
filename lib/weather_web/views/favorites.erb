@@ -16,7 +16,11 @@
   <div class="container-fluid mrg30 span6">
     <h2>Current favorites</h2>
       <div class="row-fluid">
-        <p><%= session[:fav] %></p>
+        <% session[:fav].each do |fav| %>
+          <form action="/result" method="post">
+            <button type="submit" <%fav[:name]%>><%=fav[:name]%></button>
+          </form>
+        <% end %>
       </div>
   </div>
 </div>

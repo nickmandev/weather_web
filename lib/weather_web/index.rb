@@ -118,23 +118,24 @@ module WeatherWeb
         end
 
         get '/favorites' do
+          fav = WeatherWeb::Favorites.new
+          curr_fav = fav.user_favorites(session[:current_user])
+          session[:fav] = curr_fav
           erb :favorites
         end
 
         post '/favorites' do
           cur_usr = session[:current_user]
           fav = Favorites.new(params[:fav])
-          fav.users_id = cur_usr.id
-          if fav.save
-            redirect '/favorites'
-          else
-            redirect '/error', session[:error] = "There's a problem!"
-          end
-
+            if fav.save
+              redirect '/favorites'
+            else
+              redirect '/error', session[:error] = "There's a problem!"
+            end
         end
 
         post '/favorites_' do
-          session[:fav] = Favorites.where(user_id: current_user)
+
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           session[:result] = @data.results

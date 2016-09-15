@@ -1,9 +1,13 @@
-class Favorites < ActiveRecord::Base
-  self.table_name = 'favorites'
-  belongs_to :user
+module WeatherWeb
+  class Favorites < ActiveRecord::Base
+    self.table_name = 'favorites'
+    belongs_to :user
 
-    def list_favorites
-      cur_usr = current_user
-      fav = Favorites.where(user_id: cur_usr)
-    end
+      def user_favorites(current_user)
+        favorites = Favorites.all
+        curr_fav = []
+        favorites.each{|fav| curr_fav.push(fav) if fav.users_id == current_user.id}
+        curr_fav
+      end
+  end
 end
