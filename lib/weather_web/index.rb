@@ -40,7 +40,7 @@ module WeatherWeb
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           if params[:city].length == 0
-            @errors = "ERROR(Enter a city name) To get back click on Index"
+            @errors = "ERROR(Enter a city name) To get back click on Weather"
             session[:error] = @errors
             redirect '/error'
           end
@@ -120,15 +120,20 @@ module WeatherWeb
         get '/favorites' do
           fav = WeatherWeb::Favorites.new
           curr_fav = fav.user_favorites(session[:current_user])
-          session[:fav] = curr_fav
+          forecast_fav = fav.forecast_for_favorites(curr_fav)
+          session[:fav] = forecast_fav
           erb :favorites
         end
 
         post '/favorites' do
           cur_usr = session[:current_user]
           fav = Favorites.new(params[:fav])
-            if fav.save
+          fav.users_id = cur_usr.id
+            if fav.check_if_exist(cur_usr,params[:fav][:city_id]) == false
+            fav.save
               redirect '/favorites'
+            elsif fav.check_if_exist(cur_usr,params[:fav][:city_id]) == true
+              redirect '/error', session[:error] = "This city is already in Favorites."
             else
               redirect '/error', session[:error] = "There's a problem!"
             end
