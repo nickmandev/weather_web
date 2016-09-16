@@ -10,11 +10,11 @@ module WeatherWeb
       end
 
       def forecast_for_favorites(arr)
-        @common = WeatherApp::Common.new
+        common = WeatherApp::Common.new
         result = []
-        arr.each do |arr|
-          result << @common.get_data(arr.city_id)
-        end
+          arr.each do |arr|
+            result << common.get_data(arr.city_id)
+          end
         result
       end
 

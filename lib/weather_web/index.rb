@@ -113,15 +113,20 @@ module WeatherWeb
             session.destroy
             redirect '/'
           else
-            redirect '/search'
+            redirect '/'
           end
         end
 
         get '/favorites' do
+          parser = WeatherWeb::DataParser.new
+          if session[:current_user] == nil
+            redirect '/error', session[:error] = "You must be logged in to view your Favorites!"
+          end
           fav = WeatherWeb::Favorites.new
           curr_fav = fav.user_favorites(session[:current_user])
           forecast_fav = fav.forecast_for_favorites(curr_fav)
-          session[:fav] = forecast_fav
+          for_slice = parser.flatt_hash(forecast_fav)
+          session[:fav] = parser.open_weather(for_slice)
           erb :favorites
         end
 
@@ -140,11 +145,11 @@ module WeatherWeb
         end
 
         post '/favorites_' do
-
           @data = WeatherWeb::ForecastData.new
           @data.get_city_id(params[:city])
           session[:result] = @data.results
           erb :favorites_
+
         end
   end
 end
