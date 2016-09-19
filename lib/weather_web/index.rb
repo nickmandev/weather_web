@@ -125,8 +125,7 @@ module WeatherWeb
           fav = WeatherWeb::Favorites.new
           curr_fav = fav.user_favorites(session[:current_user])
           forecast_fav = fav.forecast_for_favorites(curr_fav)
-          for_slice = parser.flatt_hash(forecast_fav)
-          session[:fav] = parser.open_weather(for_slice)
+          session[:fav] = parser.open_weather(forecast_fav)
           erb :favorites
         end
 
