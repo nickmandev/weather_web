@@ -1,24 +1,10 @@
 <div class="row-fluid">
   <div class="container-fluid mrg30 span6">
-    <h2>Add favorites</h2>
-    <h4>Enter the name of the city you want to add to favorites</h4>
-    <div class="row-fluid">
-      <div class="col-xs-4">
-        <div class="input-group">
-          <form action="/favorites_" method="post">
-            <input type="text" placeholder="Enter City" style="margin-top: 10px;" name="city">
-            <button type="submit" class="btn btn-primary">Search</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid mrg30 span6">
-    <h2>Current favorites</h2>
+    <h1>Favorites</h1>
       <div class="row-fluid">
         <% session[:fav].each do |fav| %>
          <h4>
-           <%="#{fav[0]}, #{fav[1]}, #{fav[2]}°C" %>
+           <%="#{fav[0]}, #{fav[1].capitalize}, #{fav[2]}°C" %>
          </h4>
         <% end %>
       </div>

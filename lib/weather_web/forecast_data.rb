@@ -28,9 +28,9 @@ module WeatherWeb
         @city_id = @results[0][:_id]
       end
 
-      def request_data
-        data = @common.get_data(@city_id)
-        @final_result = "The weather in #{data[:name]} is #{data[:weather][0][:description]} and the temperature is #{data[:main][:temp]} C"
+      def request_data(city)
+        data = @common.get_data(city)
+        puts data
       end
   end
 end

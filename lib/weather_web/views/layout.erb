@@ -14,9 +14,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="span3">
-       <% if session[:current_user] != nil %>
-        <a href="/favorites" class="btn btn-danger">Favorites</a></p>
-       <% end %>
+          <a href="/" class="btn btn-info">Search</a>
+       <% if session[:current_user] %>
+          <a href="/favorites" class="btn btn-info">Favorites</a>
+        <% end %>
       </div>
       <div class="pull-right">
         <% if session[:current_user] == nil %>

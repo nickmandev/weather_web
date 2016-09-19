@@ -37,20 +37,24 @@ module WeatherWeb
 
 
         post '/result' do
-          @data = WeatherWeb::ForecastData.new
-          @data.get_city_id(params[:city])
+          data = WeatherWeb::ForecastData.new
+          parser = WeatherWeb::DataParser.new
+          param = data.get_city_id(params[:city])
+          request = data.request_data(param)
+          result = parser.open_weather(request)
+          session[:single_result] = result
           if params[:city].length == 0
-            @errors = "ERROR(Enter a city name) To get back click on Weather"
-            session[:error] = @errors
+            errors = "ERROR(Enter a city name) To get back click on Weather"
+            session[:error] = errors
             redirect '/error'
           end
           session[:result] = @data.results
-          if @data.results.length > 1
+          if data.results.length > 1
             redirect ('/multiple_results')
           end
-          if @data.request_data.nil?
-            @errors = "There's something wrong with the connection please try again later!"
-            session[:error] = @errors
+          if data.request_data.nil?
+            errors = "There's something wrong with the connection please try again later!"
+            session[:error] = errors
             redirect '/error'
           end
           erb :result
@@ -62,11 +66,11 @@ module WeatherWeb
         end
 
         post '/multiple_results' do
-          @data = WeatherWeb::ForecastData.new
-          @data.multiple_results(params[:_id])
-          if @data.request_data.nil?
-            @errors = "There's something wrong with the connection please try again later!"
-            session[:error] = @errors
+          data = WeatherWeb::ForecastData.new
+          data.multiple_results(params[:_id])
+          if data.request_data.nil?
+            errors = "There's something wrong with the connection please try again later!"
+            session[:error] = errors
             redirect '/error'
           end
           erb :result

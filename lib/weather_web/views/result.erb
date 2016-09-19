@@ -1,5 +1,9 @@
 <div class="container-fluid mrg30">
   <h3>
-    <%= @data.request_data %>
+    <% session[:single_result].each do |val| %>
+
+      <%= "The weather in #{val[0]}, is #{val[1]} and the temperature is #{val[2]}" %>
+
+    <% end %>
   </h3>
 </div>

@@ -1,14 +1,13 @@
 module WeatherWeb
   class DataParser
-
-    def open_weather(hashes,hash = {})
+    def open_weather(hashes)
       result = []
         hashes.each do |val|
           result.push([val[:name],
-          val[:weather][0][:main],
+          val[:weather][0][:description],
           val[:main][:temp]])
         end
-       result
+      result
     end
   end
 end
