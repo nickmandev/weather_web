@@ -9,5 +9,15 @@ module WeatherWeb
         end
       result
     end
+
+    def parse_for_database(hash)
+      parsed = []
+        hash.each do |val|
+          parsed.push([val[:name],
+          val[:main][:temp],
+          val[:weather][0][:description]])
+        end
+      parsed
+    end
   end
 end
