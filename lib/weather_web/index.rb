@@ -41,8 +41,7 @@ module WeatherWeb
           parser = WeatherWeb::DataParser.new
           param = data.get_city_id(params[:city])
           request = data.request_data(param)
-          result = parser.open_weather(request)
-          session[:single_result] = result
+          session[:single_result] = request
           if params[:city].length == 0
             errors = "ERROR(Enter a city name) To get back click on Weather"
             session[:error] = errors
@@ -67,7 +66,7 @@ module WeatherWeb
 
         post '/multiple_results' do
           data = WeatherWeb::ForecastData.new
-          data.multiple_results(params[:_id])
+          data.request_data(params[:_id])
           if data.request_data.nil?
             errors = "There's something wrong with the connection please try again later!"
             session[:error] = errors

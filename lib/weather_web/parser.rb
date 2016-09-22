@@ -1,23 +1,25 @@
 module WeatherWeb
   class DataParser
-    def open_weather(hashes)
+    def multiple_hashes(hashes)
       result = []
-        hashes.each do |val|
-          result.push([val[:name],
-          val[:weather][0][:description],
-          val[:main][:temp]])
+      hashes.each do |val|
+          result.push([val.name,
+                      val[:main][:temp],
+                      val[:weather][0][:description].capitalize])
         end
       result
     end
 
-    def parse_for_database(hash)
-      parsed = []
-        hash.each do |val|
-          parsed.push([val[:name],
-          val[:main][:temp],
-          val[:weather][0][:description]])
-        end
-      parsed
+    def single_hash(hash)
+      result = []
+      result.push(hash[:name],hash[:main][:temp],hash[:weather][0][:description].capitalize)
+      result
+    end
+
+    def cached_result(arr)
+      result = []
+      result.push(arr[:city_name],arr[:temp],arr[:weather].capitalize)
+      result
     end
   end
 end
