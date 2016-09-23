@@ -5,7 +5,7 @@ module WeatherWeb
       def initialize
         @results = []
         @common = WeatherApp::Common.new
-        @cache = WeatherWeb::Cache.new
+        @cache = WeatherCache.new
       end
 
       def get_city_id(params)
@@ -26,18 +26,18 @@ module WeatherWeb
       end
 
       def single_result
-        city_id = @results.first._id
+        city_id = @results.first[:_id]
       end
 
       def request_data(city)
-        if @cache.find_by(:city_id => city).nil?
-          data = @common.get_data(city)
-          @cache.check_if_exist(data,city)
-          @cache
-        else
-          @cache.check_if_updated(city)
-          @cache
-        end
+        city.to_i
+        find = WeatherCache.find_by(:city_id => city)
+          if find.nil?
+            data = @common.get_data(city)
+            cache_record =  @cache.check_if_exist(data,city)
+          else
+            value = @cache.check_if_updated(city)
+          end
       end
   end
 end

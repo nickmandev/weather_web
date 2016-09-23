@@ -6,7 +6,7 @@
           <div class="row-fluid">
             <div class="radio">
               <% session[:result].each  do |val| %>
-                  <label><input type="radio" name="_id" value='<%=val[:_id]%>'><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
+                  <label><input type="radio" name="city_id" value='<%=val[:_id]%>'><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
             </div>
               <% end %>
               <button type="submit" class="btn btn-primary">Search</button>
