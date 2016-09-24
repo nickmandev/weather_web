@@ -3,7 +3,7 @@ module WeatherWeb
     def multiple_hashes(hashes)
       result = []
       hashes.each do |val|
-          result.push([val.name,
+          result.push([val[:name],
                       val[:main][:temp],
                       val[:weather][0][:description].capitalize])
         end

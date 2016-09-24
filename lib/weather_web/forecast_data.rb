@@ -34,7 +34,7 @@ module WeatherWeb
         find = WeatherCache.find_by(:city_id => city)
           if find.nil?
             data = @common.get_data(city)
-            cache_record =  @cache.check_if_exist(data,city)
+            cache_record =  @cache.cache_it(data, city)
           else
             value = @cache.check_if_updated(city)
           end

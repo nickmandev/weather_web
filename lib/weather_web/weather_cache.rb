@@ -4,7 +4,7 @@ module WeatherWeb
 
 
 
-    def check_if_exist(data,city_id)
+    def cache_it(data, city_id)
         parser = DataParser.new
         parsed = parser.single_hash(data)
         new = WeatherCache.create(attributes={city_name: parsed[0], temp: parsed[1], weather: parsed[2], city_id: city_id})
@@ -26,8 +26,9 @@ module WeatherWeb
             cache_record.update_attributes(:city_name => parsed[0],:temp => parsed[1],:weather => parsed[2])
             parsed_record = parser.cached_result(cache_record)
         end
-
-        parsed = parser.cached_result(cache_record)
+        parsed_record = parser.cached_result(cache_record)
+        puts parsed_record
+        parsed_record
     end
   end
 end

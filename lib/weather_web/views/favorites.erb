@@ -4,7 +4,7 @@
       <div class="row-fluid">
         <% session[:fav].each do |fav| %>
          <h4>
-           <%="#{fav[0]}, #{fav[1].capitalize}, #{fav[2]}°C" %>
+           <%="#{fav[0]}, #{fav[1]}, #{fav[2]}°C" %>
          </h4>
         <% end %>
       </div>
