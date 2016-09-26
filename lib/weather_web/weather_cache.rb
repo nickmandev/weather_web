@@ -25,10 +25,12 @@ module WeatherWeb
             parsed = parser.single_hash(updated_data)
             cache_record.update_attributes(:city_name => parsed[0],:temp => parsed[1],:weather => parsed[2])
             parsed_record = parser.cached_result(cache_record)
+        else
+          parsed_record = parser.cached_result(cache_record)
+          puts parsed_record
+          parsed_record
         end
-        parsed_record = parser.cached_result(cache_record)
-        puts parsed_record
-        parsed_record
+
     end
   end
 end

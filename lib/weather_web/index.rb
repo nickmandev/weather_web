@@ -66,7 +66,7 @@ module WeatherWeb
         post '/multiple_results' do
           common = WeatherApp::Common.new
           cache = WeatherWeb::WeatherCache.new
-          record = WeatherWeb::WeatherCache.where(city_id: params[:city_id])
+          record = WeatherWeb::WeatherCache.find_by(:city_id => params[:city_id])
           if record.nil?
             forecast_data = common.get_data(params[:city_id])
             response = cache.cache_it(forecast_data,params[:city_id])
@@ -136,7 +136,7 @@ module WeatherWeb
           fav = WeatherWeb::Favorites.new
           curr_fav = fav.user_favorites(session[:current_user])
           forecast_fav = fav.forecast_for_favorites(curr_fav)
-          session[:fav] = parser.multiple_hashes(forecast_fav)
+          session[:fav] = forecast_fav
           erb :favorites
         end
 
@@ -144,10 +144,10 @@ module WeatherWeb
           cur_usr = session[:current_user]
           fav = Favorites.new(params[:fav])
           fav.users_id = cur_usr.id
-            if fav.cache_it(cur_usr, params[:fav][:city_id]) == false
+            if fav.check_if_exist(cur_usr, params[:fav][:city_id]) == false
             fav.save
               redirect '/favorites'
-            elsif fav.cache_it(cur_usr, params[:fav][:city_id]) == true
+            elsif fav.check_if_exist(cur_usr, params[:fav][:city_id]) == true
               redirect '/error', session[:error] = "This city is already in Favorites."
             else
               redirect '/error', session[:error] = "There's a problem!"
