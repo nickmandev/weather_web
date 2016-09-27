@@ -3,10 +3,11 @@
     <%  val = session[:single_result] %>
         <%= "The weather in #{val[0]}, is #{val[1]} and the temperature is #{val[2]}" %>
   </h3>
+    <% if session[:current_user].nil? == false %>
   <form method="post" action="/favorites">
-    <input type="hidden" name="fav[name]" value=<%val[0]%>>
-    <input type="hidden" name="fav[city_id]" value=<% val[3]%>>
+    <input type="hidden" name="fav[name]" value="<%=val[0]%>">
+    <input type="hidden" name="fav[city_id]" value="<%= val[3]%>">
     <button class="btn btn-danger" type="submit">Add to Favorites</button>
   </form>
-
+    <% end %>
 </div>

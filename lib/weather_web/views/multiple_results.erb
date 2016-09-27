@@ -3,10 +3,16 @@
     <h3>Select from the list with results</h3>
     <div class="pull-left">
         <form action="/multiple_results" method="post">
-          <div class="row-fluid">
+          <div class="row">
             <div class="radio">
               <% session[:result].each  do |val| %>
-                  <label><input type="radio" name="city_id" value='<%=val[:_id]%>'><%= "ID: #{val[:_id]}, City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}"%><br></label>
+                  <p>
+                    <label>
+                      <input type="radio" name="city_id" value='<%=val[:_id]%>'> <%= "ID: #{val[:_id]},
+                       City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]},
+                       Longitude: #{val[:coord][:lon]}"%>
+                    </label>
+                  </p>
             </div>
               <% end %>
               <button type="submit" class="btn btn-primary">Search</button>

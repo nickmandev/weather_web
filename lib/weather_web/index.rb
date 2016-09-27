@@ -80,6 +80,7 @@ module WeatherWeb
             session[:error] = errors
             redirect '/error'
           end
+
           erb :result
         end
 

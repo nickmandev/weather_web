@@ -23,10 +23,9 @@ module WeatherWeb
         curr_fav.each do |curr_fav|
           if curr_fav.city_id.to_i == param.to_i
             return true
-          else
-            return false
           end
         end
+        false
       end
   end
 end

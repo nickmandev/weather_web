@@ -23,6 +23,7 @@ module WeatherWeb
         if cache_record.updated_at < 30.minutes.ago
             updated_data = common.get_data(record)
             parsed = parser.single_hash(updated_data)
+            puts parsed
             cache_record.update_attributes(:city_name => parsed[0],:temp => parsed[1],:weather => parsed[2])
             parsed_record = parser.cached_result(cache_record)
         else
