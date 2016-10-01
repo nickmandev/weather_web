@@ -30,9 +30,6 @@ module WeatherWeb
       def current_user
          session[:user]
       end
-      get '/' do
-        erb :index
-      end
 
 
         post '/result' do
@@ -129,25 +126,24 @@ module WeatherWeb
           end
         end
 
-        get '/favorites' do
+        get '/' do
           parser = WeatherWeb::DataParser.new
-          if session[:current_user] == nil
-            redirect '/error', session[:error] = "You must be logged in to view your Favorites!"
-          end
           fav = WeatherWeb::Favorites.new
+          if session[:current_user] != nil
           curr_fav = fav.user_favorites(session[:current_user])
           forecast_fav = fav.forecast_for_favorites(curr_fav)
           session[:fav] = forecast_fav
-          erb :favorites
+          end
+          erb :index
         end
 
-        post '/favorites' do
+        post '/' do
           cur_usr = session[:current_user]
           fav = Favorites.new(params[:fav])
           fav.users_id = cur_usr.id
             if fav.check_if_exist(cur_usr, params[:fav][:city_id]) == false
             fav.save
-              redirect '/favorites'
+              redirect '/'
             elsif fav.check_if_exist(cur_usr, params[:fav][:city_id]) == true
               redirect '/error', session[:error] = "This city is already in Favorites."
             else
@@ -155,11 +151,5 @@ module WeatherWeb
             end
         end
 
-        post '/favorites_' do
-          @data = WeatherWeb::ForecastData.new
-          @data.get_city_id(params[:city])
-          session[:result] = @data.results
-          erb :favorites_
-        end
   end
 end

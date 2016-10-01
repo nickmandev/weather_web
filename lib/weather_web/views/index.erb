@@ -1,5 +1,5 @@
-<div class="row-fluid">
-  <div class="col-xs-4 mrg30">
+<div class="jumbotron-fluid">
+  <div class="span10 mrg30 well">
     <div class="input-group">
       <form action="/result" method="post">
           <input type="text" placeholder="Enter City" style="margin: 10px;" name="city">
@@ -7,4 +7,21 @@
       </form>
     </div>
   </div>
+  <% if session[:current_user] != nil %>
+  <div class="span4 mrg30 well">
+    <h2>Favorites</h2>
+    <div class="row-fluid">
+      <% session[:fav].each do |fav| %>
+          <h4>
+            <%="The weather in #{fav[:name]}, is #{fav[:weather]}, and the temperature is #{fav[:temp]}°C" %>
+          </h4>
+      <% end %>
+    </div>
+  </div>
+  <% else %>
+    <div class="span4 mrg30 well">
+      <h2>Favorites</h2>
+      <p>You must be logged in...</p>
+    </div>
+  <% end %>
 </div>
