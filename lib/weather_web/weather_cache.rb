@@ -28,7 +28,6 @@ module WeatherWeb
             parsed_record = parser.cached_result(cache_record)
         else
           parsed_record = parser.cached_result(cache_record)
-          parsed_record
         end
 
     end
