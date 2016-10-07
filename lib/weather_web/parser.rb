@@ -3,11 +3,15 @@ module WeatherWeb
 
     def single_hash(hash)
       result = Hash.new
+      if hash[:message] != nil
+        result[:error] = "City not found!"
+      else
       result[:name] = hash[:name]
       result[:temp] = hash[:main][:temp]
       result[:weather] = hash[:weather][0][:description].capitalize
       result[:id] = hash[:id]
-      result
+      end
+        add_icon(result)
     end
 
     def cached_result(arr)
@@ -16,7 +20,27 @@ module WeatherWeb
       result[:temp] = arr[:temp]
       result[:weather] = arr[:weather].capitalize
       result[:id] = arr[:city_id]
+      add_icon(result)
+    end
+
+    def add_icon(result)
+      icon = "images/WeatherIcons/" +
+          case result[:weather]
+            when "Scattered clouds" then "Cloud.svg"
+            when "Clear sky" then "Sun.svg"
+            when "Few clouds" then "Cloud-Sun.svg"
+            when "Broken clouds" then "Cloud.svg"
+            when "Shower rain" then "Cloud-Rain.svg"
+            when "Rain" then "Cloud-Drizzle-Alt.svg"
+            when "Thunderstorm" then "Cloud-Lightning.svg"
+            when "Snow" then "Cloud-Snow-Alt.svg"
+            when "Light rain" then "Cloud-Rain-Alt.svg"
+            else "Undefined"
+          end
+      result[:icon] = icon
+      puts result[:weather]
       result
+
     end
   end
 end

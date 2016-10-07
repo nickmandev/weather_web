@@ -1,28 +1,35 @@
-<div class="row-fluid">
-  <div class="span8 mrg30 well">
-    <h4>Enter a city name in the field to check the temperature.</h4>
-    <div class="input-group">
-      <form action="/result" method="post">
-          <input type="text" placeholder="City..." style="margin: 10px;" name="city">
-          <button type="submit" class="btn btn-primary">Search</button>
-      </form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-7">
+      <div class="well">
+        <h4>Enter a city name in the field to check the temperature.</h4>
+        <form action="/result" method="post">
+          <div class="form-inline">
+              <input type="text" class="form-control"  name="city">
+            <button type="submit" class="btn">Search</button>
+          </div>
+        </form>
+      </div>
     </div>
+    <% if session[:current_user] != nil %>
+        <div class="col-xs-5">
+          <div class="well">
+            <h2>Favorites</h2>
+            <% session[:fav].each do |fav| %>
+              <h4>
+                <%="The weather in #{fav[:name]} is #{fav[:weather]}, and the temperature is #{fav[:temp]}°C" %>
+                <object data="<%= fav[:icon]%>" type="image/svg+xml" id="fav_icon"></object>
+              </h4>
+            <% end %>
+          </div>
+        </div>
+    <% else %>
+      <div class="col-xs-4">
+        <div class="well">
+          <h2>Favorites</h2>
+          <p>You must be logged in...</p>
+        </div>
+      </div>
+    <% end %>
   </div>
-  <% if session[:current_user] != nil %>
-  <div class="span4 mrg30 well">
-    <h2>Favorites</h2>
-    <div class="row-fluid">
-      <% session[:fav].each do |fav| %>
-          <h4>
-            <%="The weather in #{fav[:name]}, is #{fav[:weather]}, and the temperature is #{fav[:temp]}°C" %>
-          </h4>
-      <% end %>
-    </div>
-  </div>
-  <% else %>
-    <div class="span4 mrg30 well">
-      <h2>Favorites</h2>
-        <p>You must be logged in...</p>
-    </div>
-  <% end %>
 </div>

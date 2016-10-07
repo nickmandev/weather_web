@@ -5,39 +5,52 @@
     <title>Weather WEB</title>
     <meta name="author" content="NickMan">
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap.css' %>
-    <%= stylesheet_link_tag '/bootstrap/css/bootstrap-responsive.css' %>
+    <%= stylesheet_link_tag '/bootstrap/css/bootstrap-theme.css' %>
     <%= stylesheet_link_tag '/css/weather_web.css' %>
+    <%= stylesheet_link_tag '/bootstrap/fonts/glyphicons-halflings-regular.svg' %>
 </head>
 <body>
+<header>
+  <nav class="navbar navbar-sticky-top nav-custom-style">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-3">
+          <ul class="nav nav-pills">
+            <li><a href="/"><span class="glyphicon glyphicon-search"></span> Index</a></li>
+          </ul>
+        </div>
+        <div class="col-xs-4">
+        </div>
+        <div class="col-xs-5">
+          <div class="pull-right">
+            <% if session[:current_user] == nil %>
+                <ul class="nav nav-pills">
+                  <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> SignUP</a> </li>
+                  <li><a href="/login" ><span class="glyphicon glyphicon-log-in"></span> Login</a> </li>
+                </ul>
+            <% else %>
+                <span class="navbar-text">Signed in as:<%= session[:current_user].username %></span>
+                <a href="/logout" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 <%= yield %>
-<nav class="navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="span3">
-          <a href="/" class="btn btn-info">Index</a>
-      </div>
-      <div class="pull-right">
-        <% if session[:current_user] == nil %>
-            <a href="/signup" class="btn btn-info">SignUP</a>
-            <a href="/login" class="btn btn-info">Login</a>
-        <% else %>
-            <p style="font-size: 16px">Signed in as: <%= session[:current_user].username %>
-              <a href="/logout" class="btn btn-danger" style="margin-left: 5px">Log Out</a></p>
-        <% end %>
+<footer>
+  <nav class=" navbar navbar-bottom navbar-fixed-bottom">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="pull-right">
+          <p style="font-size: 18px;">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
+        </div>
       </div>
     </div>
-  </div>
+  </nav>
+</footer>
 
-</nav>
-<nav class="navbar-fixed-bottom">
-  <div class="row-fluid">
-    <div class="col-xs-6">
-      <div class="pull-right mrg10">
-        <p style="font-size: 18px;">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
-      </div>
-    </div>
-  </div>
-</nav>
     <%= javascript_include_tag '/bootstrap/js/bootstrap.js' %>
 </body>
 </html>

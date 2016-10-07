@@ -14,8 +14,6 @@ gem 'sinatra-contrib'
 
 gem 'json'
 
-gem 'bootstrap'
-
 gem 'sqlite3'
 
 gem 'activerecord'

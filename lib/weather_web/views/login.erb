@@ -1,9 +1,11 @@
-<div class="row-fluid">
-  <div class="col-xs-6 mrg30">
+<div class="row">
+  <div class="col-xs-6">
     <form action="/login"  method="post">
-      <input type="text" class="mrg10" name="user[username]" placeholder="Username" >
-      <input type="password" class="mrg10" name="user[password]" placeholder="Password">
-      <button type="submit" class="btn btn-primary">Login</button>
+      <div class="form-inline col-xs-10">
+        <input type="text" class="form-control" name="user[username]" placeholder="Username" >
+        <input type="password" class="form-control" name="user[password]" placeholder="Password">
+        <button type="submit" class="btn btn-info">Login</button>
+      </div>
     </form>
   </div>
 </div>

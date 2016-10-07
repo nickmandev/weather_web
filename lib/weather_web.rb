@@ -5,6 +5,7 @@ require 'sinatra/static_assets'
 require 'sinatra/reloader'
 require 'application'
 
+
 Dir[File.dirname(__FILE__) + '/weather_web/*.rb'].each {|file| require file}
 
 module WeatherWeb
