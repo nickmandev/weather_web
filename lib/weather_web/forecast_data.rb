@@ -36,7 +36,7 @@ module WeatherWeb
             data = @common.get_data(city)
             cache_record =  @cache.cache_it(data, city)
           else
-            value = @cache.check_if_updated(city)
+            value = @cache.record_from_cache(city)
           end
       end
   end

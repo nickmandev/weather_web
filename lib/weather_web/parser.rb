@@ -35,12 +35,11 @@ module WeatherWeb
             when "Thunderstorm" then "Cloud-Lightning.svg"
             when "Snow" then "Cloud-Snow-Alt.svg"
             when "Light rain" then "Cloud-Rain-Alt.svg"
+            when "Overcast clouds" then "Cloud.svg"
             else "Undefined"
           end
       result[:icon] = icon
-      puts result[:weather]
       result
-
     end
   end
 end

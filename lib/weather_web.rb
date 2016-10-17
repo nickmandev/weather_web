@@ -4,7 +4,9 @@ require 'sinatra'
 require 'sinatra/static_assets'
 require 'sinatra/reloader'
 require 'application'
-
+require 'sidekiq'
+require 'redis'
+require 'weather_web/workers/cache_worker'
 
 Dir[File.dirname(__FILE__) + '/weather_web/*.rb'].each {|file| require file}
 

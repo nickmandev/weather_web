@@ -20,3 +20,5 @@ gem 'activerecord'
 
 gem 'bcrypt'
 
+gem 'sidekiq'
+

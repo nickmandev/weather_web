@@ -1,4 +1,3 @@
-require 'bootstrap'
 require 'bcrypt'
 require 'active_record'
 require 'bundler'
