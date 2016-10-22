@@ -5,7 +5,11 @@ module WeatherWeb
     def cache_it(data, city_id)
       parser = DataParser.new
       parsed = parser.single_hash(data)
-      new = WeatherCache.create(attributes={city_name: parsed[:name], temp: parsed[:temp], weather: parsed[:weather], city_id: city_id})
+      new = WeatherCache.create(attributes={
+          city_name:  parsed[:name],
+          temp:       parsed[:temp],
+          weather:    parsed[:weather],
+          city_id:    city_id})
       if new[:city_name].nil?
         new.destroy!
         puts "ERROR:Failed save!"

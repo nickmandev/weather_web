@@ -22,3 +22,4 @@ gem 'bcrypt'
 
 gem 'sidekiq'
 
+gem 'rspec'

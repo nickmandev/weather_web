@@ -43,7 +43,7 @@ module WeatherWeb
       end
       request = data.request_data(param)
       session[:single_result] = request
-      if params[:city].length == 0
+      if data.results.length == 0
         errors = "ERROR(Enter a city name) To get back click on Weather"
         session[:error] = errors
         redirect '/error'
@@ -141,7 +141,6 @@ module WeatherWeb
     post '/' do
       cur_usr = session[:current_user]
       fav = Favorites.new(params[:fav])
-      fav.users_id = cur_usr.id
       if fav.check_if_exist(cur_usr, params[:fav][:city_id]) == false
         fav.save
         redirect '/'

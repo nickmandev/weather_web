@@ -10,12 +10,13 @@ module WeatherWeb
 
       def get_city_id(params)
         params = params.split.map(&:capitalize).join(" ")
-        list_of_cities = @common.get_city_list
-        list_of_cities.each do |val|
+        raise ArgumentError if params.blank?
+        @common.get_city_list.each do |val|
           if val[:name] == params
             @results << val
           end
         end
+
         if @results.length == 1
           single_result
         end
@@ -29,14 +30,14 @@ module WeatherWeb
         city_id = @results.first[:_id]
       end
 
-      def request_data(city)
-        city.to_i
-        find = WeatherCache.find_by(:city_id => city)
+      def request_data(city_id)
+        city_id.to_i
+        find = WeatherCache.find_by(:city_id => city_id)
           if find.nil?
-            data = @common.get_data(city)
-            cache_record =  @cache.cache_it(data, city)
+            data = @common.get_data(city_id)
+            cache_record =  @cache.cache_it(data, city_id)
           else
-            value = @cache.record_from_cache(city)
+            value = @cache.record_from_cache(city_id)
           end
       end
   end
