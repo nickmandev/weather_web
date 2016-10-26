@@ -3,14 +3,10 @@ module WeatherWeb
 
     def single_hash(hash)
       result = Hash.new
-      if hash[:message] != nil
-        result[:error] = "City not found!"
-      else
       result[:name] = hash[:name]
       result[:temp] = hash[:main][:temp]
       result[:weather] = hash[:weather][0][:description].capitalize
       result[:id] = hash[:id]
-      end
         add_icon(result)
     end
 

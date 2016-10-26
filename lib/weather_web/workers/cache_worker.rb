@@ -11,9 +11,10 @@ module WeatherWeb
     end
 
     def update_favorites(city_id)
+      type_of_forecast = 'weather'
       common = WeatherApp::Common.new
       cache = WeatherCache.find_by(:city_id => city_id)
-      json = common.get_data(city_id)
+      json = common.get_data(city_id,type_of_forecast)
       cache.update_attributes(
           :city_name  => json[:name],
           :temp       => json[:main][:temp],
