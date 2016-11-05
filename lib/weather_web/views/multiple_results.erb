@@ -6,7 +6,13 @@
         <div class="col-xs-8">
           <% session[:result].each  do |val| %>
               <div class="radio">
-                <label><input type="radio" name="city_id" value='<%=val[:_id]%>'> <%=("City: #{val[:name]}, Country: #{val[:country]}, Latitude: #{val[:coord][:lat]}, Longitude: #{val[:coord][:lon]}")%></label>
+                <label>
+                  <input type="radio" name="city_id" value='<%=val[:city_id]%>'>
+                  <%=("City: #{val[:city_name]},
+                      Country: #{val[:country]},
+                      Latitude: #{val[:latitude]},
+                      Longitude: #{val[:longitude]}")%>
+                </label>
               </div>
           <% end %>
           <button type="submit" class="btn btn-primary">Search</button>

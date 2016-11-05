@@ -9,7 +9,6 @@ module WeatherWeb
     register Sinatra::SessionHelper
 
     enable :sessions
-
       configure do
 
         set :root => File.dirname(__FILE__)
@@ -21,7 +20,6 @@ module WeatherWeb
         set :template_engine, :erb
 
       end
-
     helpers do
        def logged_in?
          !!session[:user_id]
@@ -29,28 +27,34 @@ module WeatherWeb
     end
 
     def current_user
-         session[:user]
+      session[:user]
     end
 
+    def error_message(value)
+      message = value
+      session[:error] = message
+    end
+
+    get '/error' do
+      session[:error]
+      erb :error
+    end
 
     post '/result' do
-      data = WeatherWeb::ForecastData.new
-      parser = WeatherWeb::DataParser.new
+      data = ForecastData.new
       param = data.get_city_id(params[:city])
-      session[:result] = data.results
-      if data.results.length > 1
+      session[:result] = param
+      if !param.kind_of?(String) && param.length > 1
         redirect ('/multiple_results')
       end
       request = data.request_data(param)
       session[:single_result] = request
       if data.results.length == 0
-        errors = "ERROR(Enter a city name) To get back click on Weather"
-        session[:error] = errors
+        error_message('ERROR(Enter a city name) To get back click on Weather')
         redirect '/error'
       end
       if data.request_data(param).nil?
-        errors = "There's something wrong with the connection please try again later!"
-        session[:error] = errors
+        error_message("There's something wrong with the connection please try again later!")
         redirect '/error'
       end
       erb :result
@@ -63,28 +67,23 @@ module WeatherWeb
 
     post '/multiple_results' do
       common = WeatherApp::Common.new
-      cache = WeatherWeb::WeatherCache.new
-      record = WeatherWeb::WeatherCache.find_by(:city_id => params[:city_id])
+      cache = WeatherCache.new
+      record = WeatherCache.find_by(:city_id => params[:city_id])
       if record.nil?
-        forecast_data = common.get_data(params[:city_id])
+        forecast_data = common.get_data(params[:city_id],'weather')
+        if forecast_data.nil?
+          error_message("There's something wrong with the connection please try again later!")
+          redirect '/error'
+        end
         response = cache.cache_it(forecast_data,params[:city_id])
         session[:single_result] = response
       else
         response = cache.record_from_cache(params[:city_id])
         session[:single_result] = response
       end
-      if common.get_data(params).nil?
-        errors = "There's something wrong with the connection please try again later!"
-        session[:error] = errors
-        redirect '/error'
-      end
+
 
       erb :result
-    end
-
-    get '/error' do
-      session[:error]
-      erb :error
     end
 
     get '/signup' do
@@ -96,23 +95,24 @@ module WeatherWeb
       @user = User.new(params[:user])
       if @user.save
         session[:user_id] = @user.id
-        redirect '/index', "Account Created!"
+        redirect '/index', 'Account Created!'
       else
-        redirect '/error', session[:error] = "There's a problem!"
+        redirect '/error', error_message("There's a problem!")
       end
     end
 
     get '/login' do
       erb :login
     end
+
     post '/login' do
       user = User.find_by(:username => params[:user][:username])
       if user && user.authenticate(params[:user][:password])
         session[:current_user] = user
         session[:user_id] = user.id
-        redirect '/', "Logged in!"
+        redirect '/', 'Logged in!'
       else
-        redirect '/error', session[:error] = "Wrong username/password combination!"
+        redirect '/error', error_message('Wrong username/password combination!')
       end
     end
 
@@ -127,8 +127,7 @@ module WeatherWeb
     end
 
     get '/' do
-      parser = WeatherWeb::DataParser.new
-      fav = WeatherWeb::Favorites.new
+      fav = Favorites.new
       if session[:current_user] != nil
         current_user_id = session[:current_user].id
         curr_fav = Favorites.where(:users_id => "#{current_user_id}").limit(10)
@@ -141,13 +140,13 @@ module WeatherWeb
     post '/' do
       cur_usr = session[:current_user]
       fav = Favorites.new(params[:fav])
-      if fav.check_if_exist(cur_usr, params[:fav][:city_id]) == false
+      if !fav.check_if_exist(cur_usr, params[:fav][:city_id])
         fav.save
         redirect '/'
-      elsif fav.check_if_exist(cur_usr, params[:fav][:city_id]) == true
-        redirect '/error', session[:error] = "This city is already in Favorites."
+      elsif fav.check_if_exist(cur_usr, params[:fav][:city_id])
+        redirect '/error',  error_message('This city is already in Favorites.')
       else
-        redirect '/error', session[:error] = "There's a problem!"
+        redirect '/error',  error_message("There's a problem!")
       end
     end
   end

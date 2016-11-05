@@ -7,6 +7,7 @@ module WeatherWeb
       cached = WeatherCache.all
       cached.each do |cache|
         update_favorites(cache.city_id)
+        puts cache.city_name
       end
     end
 
