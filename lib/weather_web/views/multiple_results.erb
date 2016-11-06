@@ -4,7 +4,7 @@
     <form action="/multiple_results" method="post">
       <div class="row">
         <div class="col-xs-8">
-          <% session[:result].each  do |val| %>
+          <% multiple_results.each do |val| %>
               <div class="radio">
                 <label>
                   <input type="radio" name="city_id" value='<%=val[:city_id]%>'>

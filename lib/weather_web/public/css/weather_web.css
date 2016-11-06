@@ -1,30 +1,13 @@
-.my-class {
-    margin-top: 5px;
-    text-align: center;
+.nav-custom-style {
+    background-color: #fff;
+    min-height: 0;
 }
 
-#text-style {
-    font-family:  Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    margin: 10px;
-    color: indianred;
-}
-
-#fav_icon {
-    width: 60px;
-    height: 60px;
-    vertical-align: middle;
+.nav-logged-in {
+    padding: 10px;
 }
 
 body{
-    background-color: #4E7AC7;
+    background-color: #ededed;
 }
 
-.well {
-    background-color: floralwhite;
-}
-
-.nav-custom-style {
-    background-color: floralwhite;
-
-}

@@ -2,7 +2,7 @@ module WeatherWeb
   class Index < Sinatra::Base
     require 'active_record'
 
-    attr_accessor :data, :errors, :current_user
+    attr_accessor :current_user
 
     register Sinatra::StaticAssets
     register Sinatra::Reloader
@@ -26,8 +26,15 @@ module WeatherWeb
        end
     end
 
+    before do
+      @data = ForecastData.new
+      @cache = WeatherCache.new
+    end
+
     def current_user
-      session[:user]
+      if session[:user_id] != nil
+        @current_user = User.find(session[:user_id])
+      end
     end
 
     def error_message(value)
@@ -41,28 +48,16 @@ module WeatherWeb
     end
 
     post '/result' do
-      data = ForecastData.new
-      param = data.get_city_id(params[:city])
-      session[:result] = param
-      if !param.kind_of?(String) && param.length > 1
-        redirect ('/multiple_results')
+      @result = @data.get_city_id(params[:city])
+      puts @result.length
+      response = ''
+      if @result.length > 1
+        test = @result
+        erb :multiple_results, locals: {:multiple_results => test}
+      else
+        @result.each{|res| response = @data.request_data(res[:city_id])}
+        erb :result, locals: {:result => response}
       end
-      request = data.request_data(param)
-      session[:single_result] = request
-      if data.results.length == 0
-        error_message('ERROR(Enter a city name) To get back click on Weather')
-        redirect '/error'
-      end
-      if data.request_data(param).nil?
-        error_message("There's something wrong with the connection please try again later!")
-        redirect '/error'
-      end
-      erb :result
-    end
-
-    get '/multiple_results' do
-      session[:result]
-      erb :multiple_results
     end
 
     post '/multiple_results' do
@@ -71,19 +66,12 @@ module WeatherWeb
       record = WeatherCache.find_by(:city_id => params[:city_id])
       if record.nil?
         forecast_data = common.get_data(params[:city_id],'weather')
-        if forecast_data.nil?
-          error_message("There's something wrong with the connection please try again later!")
-          redirect '/error'
-        end
         response = cache.cache_it(forecast_data,params[:city_id])
-        session[:single_result] = response
+        erb :result, locals: {:result => response}
       else
         response = cache.record_from_cache(params[:city_id])
-        session[:single_result] = response
+        erb :result, locals: {:result => response}
       end
-
-
-      erb :result
     end
 
     get '/signup' do
@@ -91,7 +79,6 @@ module WeatherWeb
     end
 
     post '/signup' do
-      session[:error]
       @user = User.new(params[:user])
       if @user.save
         session[:user_id] = @user.id
@@ -108,7 +95,6 @@ module WeatherWeb
     post '/login' do
       user = User.find_by(:username => params[:user][:username])
       if user && user.authenticate(params[:user][:password])
-        session[:current_user] = user
         session[:user_id] = user.id
         redirect '/', 'Logged in!'
       else
@@ -117,36 +103,32 @@ module WeatherWeb
     end
 
     get '/logout' do
-      if
       session[:user_id] != nil
         session.destroy
         redirect '/'
-      else
-        redirect '/'
-      end
     end
 
     get '/' do
-      fav = Favorites.new
-      if session[:current_user] != nil
-        current_user_id = session[:current_user].id
-        curr_fav = Favorites.where(:users_id => "#{current_user_id}").limit(10)
-        forecast_fav = fav.forecast_for_favorites(curr_fav)
-        session[:fav] = forecast_fav
-      end
       erb :index
     end
 
-    post '/' do
-      cur_usr = session[:current_user]
+    get '/favorites' do
+      puts current_user
+      fav = Favorites.new
+      curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
+      forecast_fav = fav.forecast_for_favorites(curr_fav)
+      erb :favorites, locals: {:favorites => forecast_fav}
+    end
+
+    post '/favorites' do
       fav = Favorites.new(params[:fav])
-      if !fav.check_if_exist(cur_usr, params[:fav][:city_id])
+      if !fav.check_if_exist(@current_user, params[:fav][:city_id])
         fav.save
         redirect '/'
-      elsif fav.check_if_exist(cur_usr, params[:fav][:city_id])
+      elsif fav.check_if_exist(@current_user, params[:fav][:city_id])
         redirect '/error',  error_message('This city is already in Favorites.')
       else
-        redirect '/error',  error_message("There's a problem!")
+        redirect '/error',  error_message("There's a problem! With the database.")
       end
     end
   end

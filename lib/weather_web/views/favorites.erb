@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="col-md-12">
+    <h2>Favorites</h2>
+    <% favorites.each do |fav| %>
+      <ol class="list-group">
+        <li class="list-group-item clearfix">
+          <h2 class="pull-right">
+            <object data="<%= fav[:icon]%>" type="image/svg+xml" id="fav_icon"></object>
+          </h2>
+          <h3 class="h3">
+            <%=fav[:name] %>
+          </h3>
+          <h2 class="h4">
+            <%= "#{fav[:weather]}, #{fav[:temp]}°C"%>
+          </h2>
+        </li>
+      </ol>
+    <% end %>
+  </div>
+</div>

@@ -8,29 +8,8 @@
               <input type="text" class="form-control"  name="city">
           </div>
             <button type="submit" class="btn btn-info">Search</button>
-
         </form>
       </div>
     </div>
-    <% if session[:current_user] != nil %>
-        <div class="col-xs-5">
-          <div class="well">
-            <h2>Favorites</h2>
-            <% session[:fav].each do |fav| %>
-              <h4>
-                <%="The weather in #{fav[:name]} is #{fav[:weather]}, and the temperature is #{fav[:temp]}°C" %>
-                <object data="<%= fav[:icon]%>" type="image/svg+xml" id="fav_icon"></object>
-              </h4>
-            <% end %>
-          </div>
-        </div>
-    <% else %>
-      <div class="col-xs-5">
-        <div class="well">
-          <h2>Favorites</h2>
-          <p>You must be logged in...</p>
-        </div>
-      </div>
-    <% end %>
   </div>
 </div>

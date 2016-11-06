@@ -7,7 +7,7 @@ module WeatherWeb
       parsed = parser.single_hash(data)
       new = WeatherCache.create(attributes={
           city_name:  parsed[:name],
-          temp:       parsed[:temp],
+          temp:       parsed[:temp].to_i,
           weather:    parsed[:weather],
           city_id:    city_id})
       if new[:city_name].nil?

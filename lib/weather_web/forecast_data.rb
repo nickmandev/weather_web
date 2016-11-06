@@ -14,11 +14,7 @@ module WeatherWeb
       raise ArgumentError if params.blank?
       @results = @city_list.find_city_by_name(params)
       raise StandardError if @results.blank?
-      if @results.length == 1
-        @results.each{ |city| return city[:city_id]}
-      else
-        @results
-      end
+      @results
     end
 
     def multiple_results(params)
