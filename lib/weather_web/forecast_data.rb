@@ -11,10 +11,7 @@ module WeatherWeb
 
     def get_city_id(params)
       params = params.split.map(&:capitalize).join(" ")
-      raise ArgumentError if params.blank?
       @results = @city_list.find_city_by_name(params)
-      raise StandardError if @results.blank?
-      @results
     end
 
     def multiple_results(params)

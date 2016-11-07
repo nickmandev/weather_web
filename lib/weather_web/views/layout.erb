@@ -8,23 +8,30 @@
     <%= stylesheet_link_tag '/bootstrap/css/bootstrap-theme.css' %>
     <%= stylesheet_link_tag '/css/weather_web.css' %>
     <%= stylesheet_link_tag '/bootstrap/fonts/glyphicons-halflings-regular.svg' %>
+    <%= stylesheet_link_tag '/css/font-awesome.css' %>
 </head>
 <body>
 <header>
   <nav class="navbar navbar-sticky-top nav-custom-style">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-3">
+        <div class="col-xs-4">
           <ul class="nav nav-pills">
-            <li><a href="/"><span class="glyphicon glyphicon-search"></span> Index</a></li>
+                <li><a href="/"><span class="glyphicon glyphicon-home"></span> Index</a> </li>
             <% unless current_user == nil %>
-            <li><a href="/favorites"><span class="glyphicon glyphicon-star"></span> Favorites</a></li>
+                <li><a href="/favorites"><span class="glyphicon glyphicon-star"></span> Favorites</a></li>
             <% end %>
           </ul>
         </div>
         <div class="col-xs-4">
+          <form action="/result" method="post" class="search-form">
+            <div class="form-group has-feedback">
+              <input type="text" name="city" class="form-control" id="search" placeholder="To search press Enter">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-4">
           <div class="pull-right">
             <% if current_user == nil %>
                 <ul class="nav nav-pills">
@@ -44,18 +51,17 @@
   </nav>
 </header>
 <%= yield %>
-<footer>
-  <nav class=" navbar navbar-bottom navbar-fixed-bottom">
-    <div class="container-fluid">
+<div class="navbar-footer">
+  <div class="container-fluid">
       <div class="row">
         <div class="pull-right">
-          <p style="font-size: 18px;">&copy;<a href="mailto:nickmandev@gmail.com">NickMan</a> 2016</p>
+          <p class="h4 footer-text"><a href="http://github.com/nickmandev" target="_blank"><i class="fa fa-github-alt"></i> NickMan</a></p>
         </div>
       </div>
-    </div>
-  </nav>
-</footer>
+  </div>
+</div>
 
     <%= javascript_include_tag '/bootstrap/js/bootstrap.js' %>
+    <%= javascript_include_tag '/bootstrap/js/npm.js' %>
 </body>
 </html>

@@ -8,11 +8,6 @@ describe WeatherWeb::ForecastData do
       params = 'sofia'
       expect(forecast.get_city_id(params)).to equal(727011)
     end
-
-    it 'must return ArgumentError' do
-      params = ''
-      expect{forecast.get_city_id(params)}.to raise_error(ArgumentError)
-    end
   end
 
   describe '#request_data(city_id)' do

@@ -22,19 +22,20 @@ module WeatherWeb
     def add_icon(result)
       icon = "images/WeatherIcons/" +
           case result[:weather]
-            when "Scattered clouds" then "Cloud.svg"
-            when "Clear sky" then "Sun.svg"
-            when "Few clouds" then "Cloud-Sun.svg"
-            when "Broken clouds" then "Cloud.svg"
-            when "Shower rain" then "Cloud-Rain.svg"
-            when "Heavy intensity rain" then 'Cloud-Rain.svg'
-            when "Rain" then "Cloud-Drizzle-Alt.svg"
-            when "Thunderstorm" then "Cloud-Lightning.svg"
-            when "Snow" then "Cloud-Snow-Alt.svg"
-            when "Light rain" then "Cloud-Rain-Alt.svg"
-            when "Overcast clouds" then "Cloud.svg"
-            when "Mist" then 'Cloud-Fog-Alt.svg'
-            else "Undefined"
+            when 'Scattered clouds' then 'Cloud.svg'
+            when 'Clear sky' then 'Sun.svg'
+            when 'Few clouds' then 'Cloud-Sun.svg'
+            when 'Broken clouds' then 'Cloud.svg'
+            when 'Shower rain' then 'Cloud-Rain.svg'
+            when 'Heavy intensity rain' then 'Cloud-Rain.svg'
+            when 'Rain' then 'Cloud-Drizzle-Alt.svg'
+            when 'Moderate rain' then 'Cloud-Drizzle-Alt.svg'
+            when 'Thunderstorm' then 'Cloud-Lightning.svg'
+            when 'Snow' then 'Cloud-Snow-Alt.svg'
+            when 'Light rain' then 'Cloud-Rain-Alt.svg'
+            when 'Overcast clouds' then 'Cloud.svg'
+            when 'Mist' then 'Cloud-Fog-Alt.svg'
+            else 'Undefined'
           end
       result[:icon] = icon
       result

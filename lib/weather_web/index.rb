@@ -48,15 +48,27 @@ module WeatherWeb
     end
 
     post '/result' do
+      begin
+      user_input = params[:city]
+      raise ArgumentError if user_input.blank?
+      rescue ArgumentError
+        error_message('Search field cannot be blank.')
+        redirect '/error'
+      end
+      begin
       @result = @data.get_city_id(params[:city])
-      puts @result.length
+      raise StandardError if @result.blank?
+      rescue StandardError
+        error_message('City not found. Check for typos.')
+        redirect '/error'
+      end
       response = ''
       if @result.length > 1
         test = @result
         erb :multiple_results, locals: {:multiple_results => test}
       else
         @result.each{|res| response = @data.request_data(res[:city_id])}
-        erb :result, locals: {:result => response}
+        erb :single_result, locals: {:result => response}
       end
     end
 
@@ -67,10 +79,10 @@ module WeatherWeb
       if record.nil?
         forecast_data = common.get_data(params[:city_id],'weather')
         response = cache.cache_it(forecast_data,params[:city_id])
-        erb :result, locals: {:result => response}
+        erb :single_result, locals: {:result => response}
       else
         response = cache.record_from_cache(params[:city_id])
-        erb :result, locals: {:result => response}
+        erb :single_result, locals: {:result => response}
       end
     end
 
@@ -84,7 +96,12 @@ module WeatherWeb
         session[:user_id] = @user.id
         redirect '/index', 'Account Created!'
       else
-        redirect '/error', error_message("There's a problem!")
+        begin
+          raise ArgumentError
+        rescue ArgumentError
+          error_message("There's a problem!")
+          redirect '/error'
+        end
       end
     end
 
@@ -96,7 +113,7 @@ module WeatherWeb
       user = User.find_by(:username => params[:user][:username])
       if user && user.authenticate(params[:user][:password])
         session[:user_id] = user.id
-        redirect '/', 'Logged in!'
+        redirect '/'
       else
         redirect '/error', error_message('Wrong username/password combination!')
       end
@@ -113,7 +130,6 @@ module WeatherWeb
     end
 
     get '/favorites' do
-      puts current_user
       fav = Favorites.new
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
       forecast_fav = fav.forecast_for_favorites(curr_fav)
@@ -122,13 +138,18 @@ module WeatherWeb
 
     post '/favorites' do
       fav = Favorites.new(params[:fav])
-      if !fav.check_if_exist(@current_user, params[:fav][:city_id])
+      if !fav.check_if_exist(current_user, params[:fav][:city_id])
         fav.save
         redirect '/'
-      elsif fav.check_if_exist(@current_user, params[:fav][:city_id])
+      elsif fav.check_if_exist(current_user, params[:fav][:city_id])
         redirect '/error',  error_message('This city is already in Favorites.')
       else
-        redirect '/error',  error_message("There's a problem! With the database.")
+        begin
+          raise StandardError
+        rescue StandardError
+          error_message("There's a problem! With the database.")
+          redirect '/error'
+        end
       end
     end
   end
