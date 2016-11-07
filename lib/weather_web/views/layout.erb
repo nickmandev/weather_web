@@ -27,7 +27,7 @@
           <form action="/result" method="post" class="search-form">
             <div class="form-group has-feedback">
               <input type="text" name="city" class="form-control" id="search" placeholder="To search press Enter">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              <span class="glyphicon glyphicon-search form-control-feedback" id="search-btn"></span>
             </div>
           </form>
         </div>
@@ -60,8 +60,8 @@
       </div>
   </div>
 </div>
-
-    <%= javascript_include_tag '/bootstrap/js/bootstrap.js' %>
-    <%= javascript_include_tag '/bootstrap/js/npm.js' %>
+<%= javascript_include_tag '/js/jquery-3.1.1.min.js' %>
+<%= javascript_include_tag '/bootstrap/js/bootstrap.js' %>
+<%= javascript_include_tag '/js/weather_web.js' %>
 </body>
 </html>
