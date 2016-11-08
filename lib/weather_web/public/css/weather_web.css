@@ -42,3 +42,27 @@ span .form-control-feedback {
 .form-group {
     margin-bottom: 0;
 }
+
+#weather-web-form {
+    border: transparent;
+    box-shadow: none;
+    border-style: none;
+    border-bottom: 1px solid;
+    border-radius: 5%;
+    background: none;
+    width: 30%;
+    text-align: center;
+}
+
+#weather-web-button {
+    width: 30%;
+    border: transparent;
+    border-style: none;
+    background: none;
+    color: black;
+    box-shadow: none;
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: medium;
+    font-family: "Helvetica Neue", sans-serif;
+}

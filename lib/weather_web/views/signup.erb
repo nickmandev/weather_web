@@ -1,10 +1,12 @@
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-5">
+  </div>
+  <div class="col-xs-4">
     <form action="/signup" method="post">
-      <div class="form-inline col-xs-10">
-        <input type="text" class="form-control" name="user[username]" placeholder="Username" >
-        <input type="password" class="form-control" name="user[password]" placeholder="Password">
-        <button type="submit" class="btn btn-info">Create</button>
+      <div class="form-group">
+        <input type="text" class="form-control" name="user[username]" placeholder="Username" id="weather-web-form" >
+        <input type="password" class="form-control" name="user[password]" placeholder="Password" id="weather-web-form">
+        <button type="submit" id="weather-web-button">CREATE</button>
       </div>
     </form>
   </div>
