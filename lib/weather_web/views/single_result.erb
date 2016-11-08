@@ -8,6 +8,7 @@
           <form method="post" action="/favorites">
             <input type="hidden" name="fav[name]" value="<%=val[:name]%>">
             <input type="hidden" name="fav[city_id]" value="<%= val[:id]%>">
+            <input type="hidden" name="fav[users_id]" value="<%= current_user.id %>">
             <button class="btn btn-danger" type="submit">Add to Favorites</button>
           </form>
         <% end %>

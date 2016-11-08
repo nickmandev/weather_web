@@ -66,3 +66,18 @@ span .form-control-feedback {
     font-size: medium;
     font-family: "Helvetica Neue", sans-serif;
 }
+
+.remove-button {
+    background: none;
+    border-style: none;
+}
+
+.important-message-small {
+    color: red;
+    font-size: medium;
+}
+
+.important-message-large {
+    color: darkred;
+    font-size: x-large;
+}

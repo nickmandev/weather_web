@@ -2,8 +2,6 @@ module WeatherWeb
   class Index < Sinatra::Base
     require 'active_record'
 
-    attr_accessor :current_user
-
     register Sinatra::StaticAssets
     register Sinatra::Reloader
     register Sinatra::SessionHelper
@@ -29,11 +27,12 @@ module WeatherWeb
     before do
       @data = ForecastData.new
       @cache = WeatherCache.new
+      @fav = Favorites.new
     end
 
     def current_user
       if session[:user_id] != nil
-        @current_user = User.find(session[:user_id])
+        current_user = User.find(session[:user_id])
       end
     end
 
@@ -130,18 +129,17 @@ module WeatherWeb
     end
 
     get '/favorites' do
-      fav = Favorites.new
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
-      forecast_fav = fav.forecast_for_favorites(curr_fav)
+      forecast_fav = @fav.forecast_for_favorites(curr_fav)
       erb :favorites, locals: {:favorites => forecast_fav}
     end
 
     post '/favorites' do
-      fav = Favorites.new(params[:fav])
-      if !fav.check_if_exist(current_user, params[:fav][:city_id])
-        fav.save
+      new_fav = Favorites.new(params[:fav])
+      if !new_fav.check_if_exist(current_user.id, params[:fav][:city_id])
+        new_fav.save
         redirect '/'
-      elsif fav.check_if_exist(current_user, params[:fav][:city_id])
+      elsif new_fav.check_if_exist(current_user.id, params[:fav][:city_id])
         redirect '/error',  error_message('This city is already in Favorites.')
       else
         begin
@@ -151,6 +149,18 @@ module WeatherWeb
           redirect '/error'
         end
       end
+    end
+
+    post '/favorites/destroy' do
+      fav_to_del = params[:city_id]
+      favorites = Favorites.where(users_id: current_user.id)
+      favorites.each do |fav|
+        if fav.city_id == fav_to_del
+          Favorites.destroy(fav.id)
+        end
+      end
+      session[:msg] = 'City removed successfully'
+      redirect '/favorites'
     end
   end
 end

@@ -12,8 +12,8 @@ module WeatherWeb
       result
     end
 
-    def check_if_exist(current_user,param)
-      curr_favorites = Favorites.where(:users_id => "#{current_user.id}")
+    def check_if_exist(current_user_id,param)
+      curr_favorites = Favorites.where(users_id: current_user_id)
       curr_favorites.each do |curr_fav|
         if curr_fav.city_id.to_i == param.to_i
           return true

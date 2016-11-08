@@ -31,10 +31,12 @@ module WeatherWeb
             when 'Rain' then 'Cloud-Drizzle-Alt.svg'
             when 'Moderate rain' then 'Cloud-Drizzle-Alt.svg'
             when 'Thunderstorm' then 'Cloud-Lightning.svg'
+            when 'Thunderstorm with light rain' then 'Cloud-Lightning.svg'
             when 'Snow' then 'Cloud-Snow-Alt.svg'
             when 'Light rain' then 'Cloud-Rain-Alt.svg'
             when 'Overcast clouds' then 'Cloud.svg'
-            when 'Mist' then 'Cloud-Fog-Alt.svg'
+            when 'Mist' then 'Cloud-Fog.svg'
+            when 'Haze' then 'Cloud-Fog-Alt.svg'
             else 'Undefined'
           end
       result[:icon] = icon
