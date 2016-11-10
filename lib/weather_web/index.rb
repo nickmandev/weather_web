@@ -48,6 +48,7 @@ module WeatherWeb
 
     post '/result' do
       begin
+      type_forecast = 'weather'
       user_input = params[:city]
       raise ArgumentError if user_input.blank?
       rescue ArgumentError
@@ -66,7 +67,7 @@ module WeatherWeb
         test = @result
         erb :multiple_results, locals: {:multiple_results => test}
       else
-        @result.each{|res| response = @data.request_data(res[:city_id])}
+        @result.each{|res| response = @data.request_weather(res[:city_id],type_forecast)}
         erb :single_result, locals: {:result => response}
       end
     end

@@ -1,17 +1,31 @@
 module WeatherWeb
   class FiveDayForecast < ActiveRecord::Base
-    def api_request(favorites)
-      common = WeatherApp::Common.new
-      result = []
-      favorites.each do |fav|
-        result << common.five_day_forecast(fav.id)
-      end
+    self.table_name = 'weather'
+
+    def five_day_forecast(city_id,type_forecast)
+      @common = WeatherApp::Common.new
+      data = @common.get_data(city_id,type_forecast)
+      cache_the_data(data)
     end
 
-    def self.test_method(city_id)
-      common = WeatherApp::Common.new
-      test = common.five_day_forecast(city_id)
-      puts test
+    def cache_the_data(forecast_data)
+      forecast_data[:list].each do |data|
+        FiveDayForecast.create(attributes = {
+            city_id:      forecast_data[:city][:id],
+            weather_type: data[:weather][0][:description],
+            temp_min:     data[:main][:temp_min],
+            temp_max:     data[:main][:temp_max],
+            temp:         data[:main][:temp],
+            timestamp:    Time.at(data[:dt])
+        })
+      end
+
+      def search
+        id = '727011'
+        date = Date.today
+        five_day_forecast = FiveDayForecast.where(timestamp: date.midnight..date.end_of_day).where(city_id: id)
+        puts five_day_forecast
+      end
 
     end
   end

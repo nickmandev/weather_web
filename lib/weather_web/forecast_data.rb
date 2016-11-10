@@ -22,8 +22,7 @@ module WeatherWeb
       single = @results.first[:_id]
     end
 
-    def request_data(city_id)
-      type_forecast = 'weather'
+    def request_weather(city_id, type_forecast)
       find = WeatherCache.find_by(:city_id => city_id)
         if find.nil?
           data = @common.get_data(city_id,type_forecast)

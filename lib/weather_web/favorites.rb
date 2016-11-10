@@ -7,7 +7,7 @@ module WeatherWeb
       forecast = ForecastData.new
       result = []
         fav_array.each do |arr|
-          result << forecast.request_data(arr.city_id)
+          result << forecast.request_weather(arr.city_id)
         end
       result
     end
