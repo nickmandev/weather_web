@@ -28,6 +28,7 @@ module WeatherWeb
       @data = ForecastData.new
       @cache = WeatherCache.new
       @fav = Favorites.new
+      @five_day = FiveDayForecast.new
     end
 
     def current_user
@@ -131,6 +132,7 @@ module WeatherWeb
 
     get '/favorites' do
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
+      @five_day.five_day_data(curr_fav)
       forecast_fav = @fav.forecast_for_favorites(curr_fav)
       erb :favorites, locals: {:favorites => forecast_fav}
     end
@@ -163,5 +165,6 @@ module WeatherWeb
       session[:msg] = 'City removed successfully'
       redirect '/favorites'
     end
+
   end
 end

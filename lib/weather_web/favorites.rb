@@ -4,10 +4,11 @@ module WeatherWeb
     belongs_to :user
 
     def forecast_for_favorites(fav_array)
+      type_forecast = "weather"
       forecast = ForecastData.new
       result = []
         fav_array.each do |arr|
-          result << forecast.request_weather(arr.city_id)
+          result << forecast.request_weather(arr.city_id,type_forecast)
         end
       result
     end

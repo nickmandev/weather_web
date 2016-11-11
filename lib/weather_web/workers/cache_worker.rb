@@ -7,7 +7,7 @@ module WeatherWeb
       cached = WeatherCache.all
       cached.each do |cache|
         if cache.updated_at < 30.minutes.ago
-          update_favorites(cache[:city_id])
+        update_favorites(cache[:city_id])
         end
       end
     end
