@@ -23,6 +23,5 @@ module WeatherWeb
           :weather    => json[:weather][0][:description].capitalize
       )
     end
-    CacheWorker.perform_in(20.minutes.ago)
   end
 end

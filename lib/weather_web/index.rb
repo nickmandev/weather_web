@@ -132,8 +132,7 @@ module WeatherWeb
 
     get '/favorites' do
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
-      @five_day.five_day_data(curr_fav)
-      forecast_fav = @fav.forecast_for_favorites(curr_fav)
+      forecast_fav = @five_day.five_day_data(curr_fav,Date.today)
       erb :favorites, locals: {:favorites => forecast_fav}
     end
 

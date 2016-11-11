@@ -21,7 +21,8 @@ module WeatherWeb
       forecast_data[:list].each do |data|
         FiveDayForecast.create(attributes = {
             city_id:      forecast_data[:city][:id],
-            weather_type: data[:weather][0][:description],
+            city_name:    forecast_data[:city][:name],
+            weather_type: data[:weather][0][:main],
             temp_min:     data[:main][:temp_min],
             temp_max:     data[:main][:temp_max],
             temp:         data[:main][:temp],
@@ -29,6 +30,5 @@ module WeatherWeb
         })
       end
     end
-    FiveDayForecastWorker.perform_in(5.minutes)
   end
 end

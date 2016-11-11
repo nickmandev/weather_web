@@ -10,6 +10,5 @@ module WeatherWeb
         FiveDayForecast.delete(old_cache)
       end
     end
-    CacheCleaner.perform_in(1.day)
   end
 end
