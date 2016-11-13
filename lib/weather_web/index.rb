@@ -29,6 +29,7 @@ module WeatherWeb
       @cache = WeatherCache.new
       @fav = Favorites.new
       @five_day = FiveDayForecast.new
+      @parser = DataParser.new
     end
 
     def current_user
@@ -132,8 +133,29 @@ module WeatherWeb
 
     get '/favorites' do
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
-      forecast_fav = @five_day.five_day_data(curr_fav,Date.today)
-      erb :favorites, locals: {:favorites => forecast_fav}
+      count = 0
+      forecast_fav = []
+      forecast = @five_day.five_day_data(curr_fav,(Date.today))
+      all_days = @parser.add_icon(forecast)
+      forecast_fav.push(all_days)
+      until count == 4 do
+        forecast = @five_day.five_day_data(curr_fav,(Date.today + count += 1))
+        all_days = @parser.add_icon(forecast)
+        forecast_fav.push(all_days)
+      end
+      forecast_fav.flatten!
+      ids = []
+      ordered_results = []
+      curr_fav.each{|fav| ids.push(fav[:city_id]) }
+      ids.each do |id|
+        forecast_fav.each do |fav|
+          if id == fav[:city_id]
+            ordered_results.push(fav)
+          end
+        end
+      end
+      ordered_results
+      erb :favorites, locals: {:favorites => ordered_results}
     end
 
     post '/favorites' do

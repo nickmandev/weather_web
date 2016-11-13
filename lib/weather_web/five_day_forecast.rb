@@ -7,9 +7,9 @@ module WeatherWeb
       results = []
       favorites.each{|fav| ids.push(fav[:city_id])}
       ids.each do |id|
-      curr_city = FiveDayForecast.where(timestamp: (date).midnight..(date).end_of_day).where(city_id: id)
-      temp_min = temp_max = temp = []
-      weather_type = city_id = city_name = ''
+        curr_city = FiveDayForecast.where(timestamp: (date).midnight..(date).end_of_day).where(city_id: id)
+        temp_min = temp_max = temp = []
+        weather_type = city_id = city_name = date =''
         curr_city.each do |city|
           city_name = city[:city_name]
           temp_min.push(city[:temp_min])
@@ -17,21 +17,22 @@ module WeatherWeb
           temp.push(city[:temp])
           city_id = city[:city_id]
           weather_type = city[:weather_type]
+          date = Date.parse(city[:timestamp].to_s)
         end
-      temp.sort!
-      len = temp.length
-      hash = Hash.new
-      hash[:temp_min] = temp_min.min
-      hash[:temp_max] = temp_max.max
-      hash[:temp] = (temp[(len-1) / 2] + temp[len / 2]) / 2
-      hash[:city_id] = city_id
-      hash[:weather_type] = weather_type
-      hash[:city_name] = city_name
-      results.push(hash)
+        temp.sort!
+        len = temp.length
+        hash = Hash.new
+        hash[:temp_min] = temp_min.min
+        hash[:temp_max] = temp_max.max
+        hash[:temp] = temp_max.max
+        hash[:city_id] = city_id
+        hash[:weather_type] = weather_type
+        hash[:city_name] = city_name
+        hash[:date] = date.strftime("%A")
+        results.push(hash)
       end
       results
     end
-
     def current_day_search
       id = '727011'
       date = Date.today

@@ -81,3 +81,14 @@ span .form-control-feedback {
     color: darkred;
     font-size: x-large;
 }
+
+.five_day_box {
+    background-color: white;
+    border: medium;
+    margin: 10px;
+
+}
+
+#five_day_container {
+
+}

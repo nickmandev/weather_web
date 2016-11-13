@@ -20,10 +20,11 @@ module WeatherWeb
     end
 
     def add_icon(result)
+      result.each do |results|
       icon = "images/WeatherIcons/" +
-          case result[:weather]
+          case results[:weather_type]
             when 'Scattered clouds' then 'Cloud.svg'
-            when 'Clear sky' then 'Sun.svg'
+            when 'Clear' then 'Sun.svg'
             when 'Few clouds' then 'Cloud-Sun.svg'
             when 'Broken clouds' then 'Cloud.svg'
             when 'Shower rain' then 'Cloud-Rain.svg'
@@ -34,12 +35,13 @@ module WeatherWeb
             when 'Thunderstorm with light rain' then 'Cloud-Lightning.svg'
             when 'Snow' then 'Cloud-Snow-Alt.svg'
             when 'Light rain' then 'Cloud-Rain-Alt.svg'
-            when 'Overcast clouds' then 'Cloud.svg'
+            when 'Clouds' then 'Cloud.svg'
             when 'Mist' then 'Cloud-Fog.svg'
             when 'Haze' then 'Cloud-Fog-Alt.svg'
             else 'Undefined'
           end
-      result[:icon] = icon
+      results[:icon] = icon
+      end
       result
     end
   end

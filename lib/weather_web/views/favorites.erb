@@ -1,30 +1,23 @@
+<script type="text/javascript" src="/javascript/jquery-3.1.1.min.js"></script>
 <div class="container-fluid">
   <div class="col-md-12">
+    <% array = favorites %>
     <% unless session[:msg].blank? %>
       <h5 class="text-center error-message"><%= session[:msg] %></h5>
     <% end %>
     <h1 class="text-center h1">Favorites</h1>
     <h4 class="text-center h4">To remove city form Favorites click on the <i class="fa fa-remove"></i></h4>
-    <% favorites.each do |fav| %>
-      <ol class="list-group">
-        <li class="list-group-item clearfix">
-          <div class="row">
-            <div class="col-xs-1">
-              <form action="/favorites/destroy" method="post">
-                <input type="hidden" value='<%= fav[:city_id] %>' name="city_id">
-                <button type="submit" class="remove-button" id="favorites-remove" ><i class="fa fa-2x fa-remove"></i></button>
-              </form>
-            </div>
-            <div class="col-xs-2">
-              <h2><%= fav[:city_name] %></h2>
-              <h3><%= fav[:weather_type] %> <%= fav[:temp]%>°</h3>
-              <h4></h4>
-            </div>
-            <div class="col-xs-2">
-            </div>
+    <div class="row" id="five_day_container">
+      <% array.each do |fav| %>
+          <div class="col-xs-2 five_day_box to_be_cloned">
+            <h6 class="text-center">
+              <object data="<%= fav[:icon]%>" type="image/svg+xml" id="fav_icon"></object>
+            </h6>
+            <h2 class="text-center"><%= fav[:city_name] %></h2>
+            <h3 class="text-center"><%= fav[:weather_type] %> <%= fav[:temp]%>°</h3>
+            <h5 class="text-center"><%= fav[:date] %></h5>
           </div>
-        </li>
-      </ol>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
