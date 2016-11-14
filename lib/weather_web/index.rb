@@ -1,6 +1,7 @@
 module WeatherWeb
   class Index < Sinatra::Base
     require 'active_record'
+    require 'sinatra/json'
 
     register Sinatra::StaticAssets
     register Sinatra::Reloader
@@ -18,11 +19,6 @@ module WeatherWeb
         set :template_engine, :erb
 
       end
-    helpers do
-       def logged_in?
-         !!session[:user_id]
-       end
-    end
 
     before do
       @data = ForecastData.new
@@ -31,7 +27,7 @@ module WeatherWeb
       @five_day = FiveDayForecast.new
       @parser = DataParser.new
     end
-
+  helpers do
     def current_user
       if session[:user_id] != nil
         current_user = User.find(session[:user_id])
@@ -42,6 +38,8 @@ module WeatherWeb
       message = value
       session[:error] = message
     end
+  end
+
 
     get '/error' do
       session[:error]
@@ -131,7 +129,11 @@ module WeatherWeb
       erb :index
     end
 
-    get '/favorites' do
+    get '/favorites/json' do
+      if current_user.nil?
+        error_message("You must be logged in!")
+        redirect '/error'
+      end
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
       count = 0
       forecast_fav = []
@@ -155,7 +157,12 @@ module WeatherWeb
         end
       end
       ordered_results
-      erb :favorites, locals: {:favorites => ordered_results}
+      content_type :json
+      ordered_results.to_json
+    end
+
+    get '/favorites' do
+      erb :favorites
     end
 
     post '/favorites' do

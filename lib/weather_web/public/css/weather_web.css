@@ -50,12 +50,12 @@ span .form-control-feedback {
     border-bottom: 1px solid;
     border-radius: 5%;
     background: none;
-    width: 30%;
+    width: 40%;
     text-align: center;
 }
 
 #weather-web-button {
-    width: 30%;
+    width: 40%;
     border: transparent;
     border-style: none;
     background: none;
@@ -84,11 +84,7 @@ span .form-control-feedback {
 
 .five_day_box {
     background-color: white;
-    border: medium;
     margin: 10px;
-
-}
-
-#five_day_container {
+    margin-left: 25px;
 
 }

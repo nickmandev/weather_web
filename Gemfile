@@ -23,3 +23,5 @@ gem 'bcrypt'
 gem 'sidekiq'
 
 gem 'rspec'
+
+gem 'sidekiq-cron'

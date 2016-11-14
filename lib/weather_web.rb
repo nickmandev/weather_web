@@ -6,6 +6,7 @@ require 'sinatra/reloader'
 require 'application'
 require 'sidekiq'
 require 'redis'
+require 'sidekiq-cron'
 
 Dir[File.dirname(__FILE__) + '/weather_web/*.rb'].each {|file| require file}
 

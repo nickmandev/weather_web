@@ -9,4 +9,5 @@
 /tmp/
 .idea/
 config.ru
+sidekiq_schedule.yml
 

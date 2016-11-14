@@ -20,7 +20,6 @@ module WeatherWeb
           date = Date.parse(city[:timestamp].to_s)
         end
         temp.sort!
-        len = temp.length
         hash = Hash.new
         hash[:temp_min] = temp_min.min
         hash[:temp_max] = temp_max.max
