@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "description": "A Vue.js project",
+  "name": "WeatherWeb",
+  "description": "Vuejs front-end for WeatherWeb",
   "author": "Nick <nickmandev@gmail.com>",
   "private": true,
   "scripts": {
@@ -18,6 +18,8 @@
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
     "vue-loader": "^9.7.0",
+    "vue-resource": "^0.1.17",
+    "vuestrap-base-components": "^0.8.10",
     "webpack": "^2.1.0-beta.25",
     "webpack-dev-server": "^2.1.0-beta.0"
   }
