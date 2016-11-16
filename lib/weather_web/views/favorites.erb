@@ -1,14 +1,23 @@
-<script type="text/javascript" src="/javascript/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="/javascript/five_day_forecast.js"></script>
+<body>
 <div class="container-fluid">
-  <div class="col-xs-12">
-    <% unless session[:msg].blank? %>
-      <h5 class="text-center error-message"><%= session[:msg] %></h5>
-    <% end %>
-    <h1 class="text-center h1">Favorites</h1>
-    <h4 class="text-center h4">To remove city form Favorites click on the <i class="fa fa-remove"></i></h4>
-  </div>
-  <div class="row" id="five_day_container">
-
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 class="text-center h1">Favorites</h1>
+      <h4 class="text-center h4">To remove city form Favorites click on the <i class="fa fa-remove"></i></h4>
+    </div>
   </div>
 </div>
+<div id="five_day_container">
+  <favorite :city_name="city_name" :weather="weather" :temp="temp"></favorite>
+</div>
+
+<template id="fav_template">
+  <div>
+    <h2>{{ city_name }}</h2>
+    <h5>{{ weather }}</h5>
+    <p>{{ temp }}</p>
+  </div>
+</template>
+<script type="text/javascript" src="/javascript/vue.js"></script>
+<script src="/javascript/five_day_vue.vue"></script>
+</body>

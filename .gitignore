@@ -10,4 +10,4 @@
 .idea/
 config.ru
 sidekiq_schedule.yml
-
+node_modules

@@ -135,15 +135,16 @@ module WeatherWeb
         redirect '/error'
       end
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
-      count = 0
+      count = 1
       forecast_fav = []
       forecast = @five_day.five_day_data(curr_fav,(Date.today))
       all_days = @parser.add_icon(forecast)
       forecast_fav.push(all_days)
-      until count == 4 do
-        forecast = @five_day.five_day_data(curr_fav,(Date.today + count += 1))
+      until count == 5 do
+        forecast = @five_day.five_day_data(curr_fav,(Date.today + count))
         all_days = @parser.add_icon(forecast)
         forecast_fav.push(all_days)
+        count += 1
       end
       forecast_fav.flatten!
       ids = []

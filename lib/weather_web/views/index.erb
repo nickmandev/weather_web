@@ -1,4 +1,4 @@
-
+<script type="text/javascript" src="/javascript/vue.js"></script>
 <div class="container-fluid">
     <div class="jumbotron">
         <p>Hello and welcome to our website. Here you can check the weather on almost every city in the planet.
@@ -7,3 +7,33 @@
         You can check it out their api is free of charge and good for experimenting.</p>
     </div>
 </div>
+
+<div class="container" id="fav-template">
+    <post :title="title" :author="author" :content="content"></post>
+</div>
+
+  <template id="post-template">
+    <div>
+      <h1>{{ title }}</h1>
+      <h4>{{ author }}</h4>
+      <p>{{ content }}</p>
+    </div>
+  </template>
+
+
+<script>
+  Vue.component('post', {
+    template: '#post-template',
+    props:['title','author','content']
+  });
+
+  var vm = new Vue({
+    el: '#fav-template',
+    data: {
+      author: "blqh",
+      title: "test",
+      content: "this must be at least longer."
+    }
+
+  });
+</script>

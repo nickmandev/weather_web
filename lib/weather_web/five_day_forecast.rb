@@ -27,7 +27,7 @@ module WeatherWeb
         hash[:city_id] = city_id
         hash[:weather_type] = weather_type
         hash[:city_name] = city_name
-        hash[:date] = date.strftime("%A")
+        hash[:date] = date
         results.push(hash)
       end
       results
