@@ -126,7 +126,7 @@ module WeatherWeb
     end
 
     get '/' do
-      erb :index
+      redirect './javascript/app/index.html'
     end
 
     get '/favorites/json' do
