@@ -16,16 +16,10 @@ module WeatherWeb
 
         set :show_exceptions, :after_handler
 
-        set :template_engine, :erb
-
       end
 
     before do
-      @data = ForecastData.new
-      @cache = WeatherCache.new
-      @fav = Favorites.new
-      @five_day = FiveDayForecast.new
-      @parser = DataParser.new
+
     end
   helpers do
     def current_user
@@ -40,11 +34,12 @@ module WeatherWeb
     end
   end
 
-
+=begin
     get '/error' do
       session[:error]
       erb :error
     end
+=end
 
     post '/result' do
       begin
@@ -86,9 +81,11 @@ module WeatherWeb
       end
     end
 
+=begin
     get '/signup' do
       erb :signup
     end
+=end
 
     post '/signup' do
       @user = User.new(params[:user])
@@ -105,30 +102,40 @@ module WeatherWeb
       end
     end
 
+=begin
     get '/login' do
       erb :login
     end
+=end
 
-    post '/login' do
-      user = User.find_by(:username => params[:user][:username])
-      if user && user.authenticate(params[:user][:password])
+    post '/api/login' do
+      user =''
+      pass = ''
+      request.body.each do |req|
+        hash = JSON.parse(req,:symbolize_names => true)
+        user = hash[:username]
+        pass = hash[:pass]
+      end
+      user = User.find_by(:username => user)
+      if user && user.authenticate(pass)
         session[:user_id] = user.id
-        redirect '/'
+        puts "Signed in as #{current_user.username}"
       else
-        redirect '/error', error_message('Wrong username/password combination!')
+        puts "Bad cred"
       end
     end
 
+=begin
     get '/logout' do
       session[:user_id] != nil
         session.destroy
         redirect '/'
     end
-
+=end
     get '/' do
       redirect './javascript/app/index.html'
     end
-
+=begin
     get '/favorites/json' do
       if current_user.nil?
         error_message("You must be logged in!")
@@ -165,6 +172,7 @@ module WeatherWeb
     get '/favorites' do
       erb :favorites
     end
+=end
 
     post '/favorites' do
       new_fav = Favorites.new(params[:fav])
@@ -197,3 +205,4 @@ module WeatherWeb
 
   end
 end
+
