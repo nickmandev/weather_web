@@ -17,10 +17,6 @@ module WeatherWeb
         set :show_exceptions, :after_handler
 
       end
-
-    before do
-
-    end
   helpers do
     def current_user
       if session[:user_id] != nil
@@ -87,26 +83,29 @@ module WeatherWeb
     end
 =end
 
-    post '/signup' do
-      @user = User.new(params[:user])
-      if @user.save
-        session[:user_id] = @user.id
-        redirect '/index', 'Account Created!'
+    post '/api/sign_up' do
+      username = ''
+      password = ''
+      request.body.each do |req|
+        hash = JSON.parse(req, :symbolize_names => true)
+        username = hash[:username]
+        password = hash[:pass]
+      end
+      user = User.new(attributes={
+          username: username,
+          password: password
+      })
+      if user.save
+        session[:user_id] = user.id
       else
         begin
           raise ArgumentError
         rescue ArgumentError
-          error_message("There's a problem!")
-          redirect '/error'
+          puts "There's a problem!"
         end
       end
     end
 
-=begin
-    get '/login' do
-      erb :login
-    end
-=end
 
     post '/api/login' do
       user =''
@@ -119,11 +118,14 @@ module WeatherWeb
       user = User.find_by(:username => user)
       if user && user.authenticate(pass)
         session[:user_id] = user.id
-        puts "Signed in as #{current_user.username}"
+        data = current_user.to_json
+        data
       else
-        puts "Bad cred"
+        data = {:error => "bad credentials"}.to_json
+        data
       end
     end
+
 
 =begin
     get '/logout' do
