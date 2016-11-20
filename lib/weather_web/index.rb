@@ -83,13 +83,13 @@ module WeatherWeb
     end
 =end
 
-    post '/api/sign_up' do
+    post '/api/signup' do
       username = ''
       password = ''
       request.body.each do |req|
         hash = JSON.parse(req, :symbolize_names => true)
         username = hash[:username]
-        password = hash[:pass]
+        password = hash[:password]
       end
       user = User.new(attributes={
           username: username,
@@ -110,10 +110,11 @@ module WeatherWeb
     post '/api/login' do
       user =''
       pass = ''
+
       request.body.each do |req|
         hash = JSON.parse(req,:symbolize_names => true)
         user = hash[:username]
-        pass = hash[:pass]
+        pass = hash[:password]
       end
       user = User.find_by(:username => user)
       if user && user.authenticate(pass)
