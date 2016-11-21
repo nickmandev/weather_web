@@ -36,6 +36,7 @@
                         }
                     this.$http.post('/api/signup',credentials).then(function(data){
                         this.error = 'Account created successfully'
+                        this.$router.go('/home')
                     }, (response)=> {
                         console.log(response)
                     })

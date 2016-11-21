@@ -2,13 +2,24 @@ module WeatherWeb
   class Index < Sinatra::Base
     require 'active_record'
     require 'sinatra/json'
+    require 'jwt'
 
     register Sinatra::StaticAssets
     register Sinatra::Reloader
     register Sinatra::SessionHelper
+    register Sinatra::CrossOrigin
+
+    SIGNING_KEY_PATH = File.expand_path("../../../weather_web.rsa", __FILE__)
+    VERIFY_KEY_PATH = File.expand_path("../../../weather_web.rsa.pub", __FILE__)
+
+    before do
+      halt 200 if request.request_method == "OPTIONS"
+    end
 
     enable :sessions
       configure do
+
+        enable :cross_origin
 
         set :root => File.dirname(__FILE__)
 
@@ -16,7 +27,23 @@ module WeatherWeb
 
         set :show_exceptions, :after_handler
 
+        signing_key = ""
+        verify_key = ""
+
+        File.open(SIGNING_KEY_PATH) do |file|
+          signing_key = OpenSSL::PKey.read(file)
+        end
+
+        File.open(VERIFY_KEY_PATH) do |file|
+          verify_key = OpenSSL::PKey.read(file)
+        end
+
+        set :signing_key, signing_key
+
+        set :verify_key, verify_key
+
       end
+
   helpers do
     def current_user
       if session[:user_id] != nil
@@ -27,6 +54,54 @@ module WeatherWeb
     def error_message(value)
       message = value
       session[:error] = message
+    end
+
+    def extract_token
+      token = request.env['access_token']
+
+    if token
+      return token
+    end
+
+    token = request['access_token']
+
+    if token
+      return token
+    end
+
+    token = session['access_token']
+
+    if token
+      return token
+    end
+
+    return nil
+    end
+
+    def authorized?
+      @token = extract_token
+      begin
+        payload, header = JWT.decode(@token, settings.verify_key, true)
+
+        @exp = header['exp']
+
+        if @exp.nil?
+          puts "Access token doesn't have exp set"
+          return false
+        end
+
+        @exp = Time.at(@exp.to_i)
+
+        if Time.now > @exp
+          puts 'Access token expired'
+          return false
+        end
+
+        @user_id = payload['user_id']
+
+      rescue JWT::DecodeError => e
+        return false
+      end
     end
   end
 
@@ -119,7 +194,12 @@ module WeatherWeb
       user = User.find_by(:username => user)
       if user && user.authenticate(pass)
         session[:user_id] = user.id
-        data = current_user.to_json
+        headers = {
+            exp: Time.now.to_i + 900
+        }
+
+        @token = JWT.encode({user_id: user.id}, settings.signing_key, "RS256", headers)
+        data = {:token => @token,:current_user => current_user}.to_json
         data
       else
         data = {:error => "bad credentials"}.to_json

@@ -8,13 +8,17 @@
     </div>
 </template>
 <script>
+import auth from '../auth/auth'
+
     export default{
         name: "favorite",
         data: function(){
             return{
-
+               current_user:'',
             }
         },
-        props: ['curr_user']
+        methods:{
+
+        }
     }
 </script>

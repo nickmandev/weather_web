@@ -11,3 +11,5 @@
 config.ru
 sidekiq_schedule.yml
 node_modules
+weather_web.rsa
+weather_web.rsa.pub

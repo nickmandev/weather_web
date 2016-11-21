@@ -12,6 +12,8 @@ gem 'sinatra-static-assets'
 
 gem 'sinatra-contrib'
 
+gem 'sinatra-cross_origin'
+
 gem 'json'
 
 gem 'sqlite3'
@@ -25,3 +27,5 @@ gem 'sidekiq'
 gem 'rspec'
 
 gem 'sidekiq-cron'
+
+gem 'jwt'
