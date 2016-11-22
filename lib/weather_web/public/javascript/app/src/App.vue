@@ -3,17 +3,18 @@
         <nav class="navbar navbar-default">
             <span class="navbar-brand text-muted">Weather Web</span>
                 <ul class="nav navbar-nav">
-                    <li><button class="btn btn-default navbar-btn pull-right"  @click="logout" v-if="isLoggedIn">
+                    <li><button class="btn btn-default navbar-btn pull-right"  @click="logout" v-if="current_user">
                         Logout
                     </button></li>
-                    <li><router-link to="/favorites" v-if="isLoggedIn">Favorites</router-link></li>
-                    <li><p class="navbar-text" v-if="isLoggedIn">Signed in as: {{ current_user["username"] }}</p></li>
-                    <li><router-link to="/signup" v-if="!isLoggedIn">SignUp</router-link></li>
-                    <li><a @click='logIn' v-if="!isLoggedIn">Login</a></li>
+                    <li><p class="navbar-text" v-if="current_user">Signed in as: {{ current_user["username"] }}</p></li>
+                    <li><button class="btn btn-default navbar-btn" @click='signUp' v-if="!current_user">SignUp</button></li>
+                    <li><button class="btn btn-default navbar-btn" @click='logIn' v-if="!current_user">Login</button></li>
                 </ul>
         </nav>
-        <div v-if="error">
-            <h5> {{error}}</h5>
+        <div v-show="error">
+            <transition name="slide-fade">
+            <h5> {{error}} <span class="glyphicon glyphicon-remove" @click="error = false"></span></h5>
+            </transition>
         </div>
         <div class="jumbotron">
             <p>Hello and welcome to our website. Here you can check the weather on almost every city in the planet.
@@ -22,62 +23,112 @@
                 You can check it out their api is free of charge and good for experimenting.The website front-end part
                 is powered by VueJs engine, meanwhile at the back-end we use Sinatra with Ruby. It's example project.</p>
         </div>
-        <div v-if="showLogIn">
-            <div class="form-group col-xs">
+        <div v-show="!current_user">
+        <div v-if="signUpLogIn">
+            <div class="form-group">
                 <label  for="usr">Username</label>
                 <input v-model="credentials.username" type="text" id="usr" class="form-control">
                 <label  for="pass">Password</label>
                 <input v-model="credentials.password" type="password" id="pass" class="form-control">
-                <button class="btn btn-primary" type="submit" @click="submit">Logon</button>
+                <button class="btn btn-primary" type="submit" @click="submitLogIn">Logon</button>
             </div>
         </div>
-        <router-view></router-view>
+        <div v-else="signUpLogIn">
+            <div class="form-group">
+                <label  for="usr_sign">Username</label>
+                <input v-model="credentials.username" id="usr_sign" type="text" class="form-control" >
+                <label for="pass_sign">Password</label>
+                <input v-model="credentials.password" id="pass_sign" type="password" class="form-control" >
+                <label  for="confPass">Confirm password</label>
+                <input v-model="credentials.confPassword" id="confPass" type="password" class="form-control">
+                <button class="btn btn-primary" type="submit" @click="submitSignUp">SignUP</button>
+            </div>
+        </div>
+        </div>
+        <transition name="slide-fade">
+            <favorite v-show="current_user"></favorite>
+        </transition>
+        <p v-if="view"> {{ view }}</p>
     </div>
 </template>
+<style>
+.slide-fade-leave-active{
+    transition: all .3s ease;
+}
 
+.slide-fade-enter-active{
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade-enter, .slide-fade-leave-active{
+    padding-left: 10px;
+    opacity: 0;
+}
+</style>
 <script>
 import auth from './auth/auth.js'
+import Favorite from './components/Favorite.vue'
+import {mapGetters} from 'vuex'
 
 export default {
-
   data: function() {
         return {
-            isLoggedIn: false,
-            error: false,
-            message: '',
-            showLogIn: false,
+            signUpLogIn: false,
+            error: '',
             credentials: {
-                    username: '',
-                    password: ''
-                },
+                username: '',
+                password: '',
+                confPassword: ''
+            },
             current_user: '',
+            favorite: {},
+            view: ''
             }
     },
-  methods:{
 
+  components:{
+        Favorite
+  },
+  methods:{
+        mapGetters(){
+           view: 'viewUser'
+        },
         removeErrorMessage(){
             this.error = false
             },
-        submit(){
-        var credentials = {
+        submitLogIn(){
+            var credentials = {
                   username: this.credentials.username,
                   password: this.credentials.password
                 }
             auth.logIn(this,credentials,'/favorites')
-            this.showLogIn = false
-
-        },
+            this.$store.commit('setCurrentUser','this.current_user')
+            },
+        submitSignUp(){
+            if(this.credentials.password == this.credentials.confPassword){
+                var credentials = {
+                    username: this.credentials.username,
+                    password: this.credentials.password
+                }
+                auth.signUp(this,credentials)
+            }else{
+                this.error = "Password field's must be identical"
+                }
+            },
         logout(){
             auth.logOut(this)
             this.isLoggedIn = false
+            this.$router.go('/home')
             },
         logIn(){
-            this.showLogIn = !this.showLogIn
+            this.signUpLogIn = true
 
+            },
+        signUp(){
+            this.signUpLogIn = false
+            }
         },
-        }
 
 }
-
 
 </script>

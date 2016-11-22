@@ -202,7 +202,8 @@ module WeatherWeb
         data = {:token => @token,:current_user => current_user}.to_json
         data
       else
-        data = {:error => "bad credentials"}.to_json
+        puts 'Wrong cred'
+        data = {:error => "Account and/or Password was incorect!"}.to_json
         data
       end
     end
@@ -218,11 +219,10 @@ module WeatherWeb
     get '/' do
       redirect './javascript/app/index.html'
     end
-=begin
-    get '/favorites/json' do
-      if current_user.nil?
-        error_message("You must be logged in!")
-        redirect '/error'
+
+    post '/api/favorites' do
+      request.body.each do |req|
+
       end
       curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
       count = 1
@@ -255,7 +255,7 @@ module WeatherWeb
     get '/favorites' do
       erb :favorites
     end
-=end
+
 
     post '/favorites' do
       new_fav = Favorites.new(params[:fav])

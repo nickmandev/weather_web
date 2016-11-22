@@ -13,9 +13,9 @@ import auth from '../auth/auth'
     export default{
         name: "favorite",
         data: function(){
-            return{
-               current_user:'',
-            }
+                return{
+                   favorites:{}
+                }
         },
         methods:{
 
