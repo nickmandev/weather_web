@@ -6,7 +6,7 @@
                     <li><button class="btn btn-default navbar-btn pull-right"  @click="logout" v-if="current_user">
                         Logout
                     </button></li>
-                    <li><p class="navbar-text" v-if="current_user">Signed in as: {{ current_user["username"] }}</p></li>
+                    <li><p class="navbar-text" v-if="current_user">Signed in as: {{ getUser }}</p></li>
                     <li><button class="btn btn-default navbar-btn" @click='signUp' v-if="!current_user">SignUp</button></li>
                     <li><button class="btn btn-default navbar-btn" @click='logIn' v-if="!current_user">Login</button></li>
                 </ul>
@@ -45,10 +45,10 @@
             </div>
         </div>
         </div>
-        <transition name="slide-fade">
+        <div class="row">
             <favorite v-show="current_user"></favorite>
-        </transition>
-        <p v-if="view"> {{ view }}</p>
+        </div>
+
     </div>
 </template>
 <style>
@@ -81,8 +81,7 @@ export default {
                 confPassword: ''
             },
             current_user: '',
-            favorite: {},
-            view: ''
+            favorite: {}
             }
     },
 
@@ -92,7 +91,7 @@ export default {
   methods:{
         mapGetters(){
            view: 'viewUser'
-        },
+            },
         removeErrorMessage(){
             this.error = false
             },
@@ -102,7 +101,8 @@ export default {
                   password: this.credentials.password
                 }
             auth.logIn(this,credentials,'/favorites')
-            this.$store.commit('setCurrentUser','this.current_user')
+
+
             },
         submitSignUp(){
             if(this.credentials.password == this.credentials.confPassword){
@@ -111,6 +111,7 @@ export default {
                     password: this.credentials.password
                 }
                 auth.signUp(this,credentials)
+                this.getUser()
             }else{
                 this.error = "Password field's must be identical"
                 }
@@ -128,6 +129,12 @@ export default {
             this.signUpLogIn = false
             }
         },
+  computed:{
+        getUser: function(){
+            this.current_user = this.$store.state.current_user
+            return this.current_user['username']
+        }
+  }
 
 }
 

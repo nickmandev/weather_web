@@ -14,6 +14,8 @@ module WeatherWeb
 
     before do
       halt 200 if request.request_method == "OPTIONS"
+      @five_day = FiveDayForecast.new
+      @parser = DataParser.new
     end
 
     enable :sessions
@@ -221,11 +223,14 @@ module WeatherWeb
     end
 
     post '/api/favorites' do
+      id = ""
       request.body.each do |req|
-
+        hash = JSON.parse(req,:symbolize_names => true)
+        id = hash[:id]
       end
-      curr_fav = Favorites.where(:users_id => "#{current_user.id}").limit(10)
+      curr_fav = Favorites.where(:users_id => "#{id}").limit(10)
       count = 1
+      puts curr_fav
       forecast_fav = []
       forecast = @five_day.five_day_data(curr_fav,(Date.today))
       all_days = @parser.add_icon(forecast)
@@ -249,13 +254,14 @@ module WeatherWeb
       end
       ordered_results
       content_type :json
-      ordered_results.to_json
+      data = ordered_results.to_json
+      data
     end
-
+=begin
     get '/favorites' do
       erb :favorites
     end
-
+=end
 
     post '/favorites' do
       new_fav = Favorites.new(params[:fav])
