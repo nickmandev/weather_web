@@ -1,16 +1,20 @@
 <template>
-    <div id="app">
-        <nav class="navbar navbar-default">
-            <span class="navbar-brand text-muted">Weather Web</span>
-                <ul class="nav navbar-nav">
-                    <li><button class="btn btn-default navbar-btn pull-right"  @click="logout" v-if="current_user">
+    <div id="app" class="container-fluid">
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <span class="navbar-brand text-muted">Weather Web</span>
+                <div class="col-xs-3" v-show="!current_user">
+                    <button class="btn btn-default navbar-btn" @click='signUp' v-if="!current_user">SignUp</button>
+                    <button class="btn btn-default navbar-btn" @click='logIn' v-if="!current_user">Login</button>
+                </div>
+                <div class="pull-right" v-show="current_user">
+                    <button class="btn btn-default navbar-btn"  @click="logout" v-if="current_user">
                         Logout
-                    </button></li>
-                    <li><p class="navbar-text" v-if="current_user">Signed in as: {{ getUser }}</p></li>
-                    <li><button class="btn btn-default navbar-btn" @click='signUp' v-if="!current_user">SignUp</button></li>
-                    <li><button class="btn btn-default navbar-btn" @click='logIn' v-if="!current_user">Login</button></li>
-                </ul>
-        </nav>
+                    </button>
+                    <p class="navbar-text" v-if="getUser">Signed in as: {{ getUser }}</p>
+                </div>
+            </nav>
+        </div>
         <div v-show="error">
             <transition name="slide-fade">
             <h5> {{error}} <span class="glyphicon glyphicon-remove" @click="error = false"></span></h5>
@@ -101,7 +105,6 @@ export default {
                   password: this.credentials.password
                 }
             auth.logIn(this,credentials,'/favorites')
-
 
             },
         submitSignUp(){
