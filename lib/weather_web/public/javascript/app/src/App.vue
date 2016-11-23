@@ -75,7 +75,7 @@ import Favorite from './components/Favorite.vue'
 import {mapGetters} from 'vuex'
 
 export default {
-  data: function() {
+    data: function() {
         return {
             signUpLogIn: false,
             error: '',
@@ -89,10 +89,10 @@ export default {
             }
     },
 
-  components:{
+    components:{
         Favorite
-  },
-  methods:{
+    },
+    methods:{
         mapGetters(){
            view: 'viewUser'
             },
@@ -114,7 +114,6 @@ export default {
                     password: this.credentials.password
                 }
                 auth.signUp(this,credentials)
-                this.getUser()
             }else{
                 this.error = "Password field's must be identical"
                 }
@@ -132,12 +131,26 @@ export default {
             this.signUpLogIn = false
             }
         },
-  computed:{
+    computed:{
         getUser: function(){
             this.current_user = this.$store.state.current_user
             return this.current_user['username']
         }
-  }
+    },
+
+    watch:{
+        current_user: function getFavorites(){
+            this.$http.post('http://localhost:9292/api/favorites', this.$store.state.current_user).then(function(data){
+                this.$store.commit('fetchForecast',data.body['forecastFavorites'])
+                this.$store.commit('populateFavorites',data.body['favorites'])
+            }),(response) => {
+                console.log(response)
+            }
+
+         }
+
+    }
+
 
 }
 

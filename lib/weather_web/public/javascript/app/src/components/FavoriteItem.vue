@@ -1,6 +1,7 @@
 <template>
     <div id="favorite-item" class="container-fluid">
-        <div class="col-xs-2 well" v-for="f in favorites" id="weather-box" v-if="show">
+
+        <div class="col-xs-2 well" v-for="f in forecast" id="weather-box" v-if="show">
             <h4 class="text-center">{{ f.date }}</h4>
             <h3 class="text-center">{{ f.day }}</h3>
             <div class="row">
@@ -29,37 +30,21 @@
     props: ['clicked'],
     data: function(){
         return{
-            favorites:[],
+            forecast:[],
             hide: false,
             show: true
         }
     },
-    computed:{
-        ifClicked(){
-            console.log(this.click)
-            return this.click = this.clicked
-            if(this.click == true){
-                console.log("True")
-                this.getFavorites()
-            }else{
-                console.log("False")
-            }
-        }
-    },
     methods:{
-        getFavorites(){
-            this.$http.post('http://localhost:9292/api/favorites', this.$store.state.current_user).then(function(data){
-                this.favorites = data.body
-                this.hide = true
-                this.show = true
-                console.log(this.click)
-            }),(response) => {
-                console.log(response)
-            }
-        },
         hideFavorites(){
             this.show = false
             this.hide = false
+        },
+        getFavorites(){
+        console.log("Click")
+            this.forecast = this.$store.state.forecast
+            this.hide = true
+            this.show = true
         }
     },
 

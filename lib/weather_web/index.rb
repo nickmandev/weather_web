@@ -254,7 +254,7 @@ module WeatherWeb
       end
       ordered_results
       content_type :json
-      data = ordered_results.to_json
+      data = {:forecastFavorites => ordered_results, :favorites => curr_fav}.to_json
       data
     end
 =begin
