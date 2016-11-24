@@ -25,9 +25,8 @@
     }
 </style>
 <script>
- export default{
+export default{
     name: "favorite-item",
-    props: ['clicked'],
     data: function(){
         return{
             forecast:[],
@@ -41,7 +40,6 @@
             this.hide = false
         },
         getFavorites(){
-        console.log("Click")
             this.forecast = this.$store.state.forecast
             this.hide = true
             this.show = true
@@ -49,5 +47,5 @@
     },
 
 
- }
+}
 </script>

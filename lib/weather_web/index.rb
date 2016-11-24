@@ -280,8 +280,12 @@ module WeatherWeb
       end
     end
 
-    post '/favorites/destroy' do
-      fav_to_del = params[:city_id]
+    delete '/api/remove_favorite' do
+      params['ids'].each do |id|
+        puts id
+      end
+=begin
+      fav_to_del = params
       favorites = Favorites.where(users_id: current_user.id)
       favorites.each do |fav|
         if fav.city_id == fav_to_del
@@ -290,6 +294,7 @@ module WeatherWeb
       end
       session[:msg] = 'City removed successfully'
       redirect '/favorites'
+=end
     end
 
   end
