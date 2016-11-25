@@ -21,6 +21,7 @@ import FavoriteItem from '../components/FavoriteItem.vue'
 import ManageFavorites from '../components/ManageFavorites.vue'
 export default{
     name: "favorite",
+    props: ['cityName'],
     data: function(){
             return{
                 clicked: false,

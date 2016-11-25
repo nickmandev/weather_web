@@ -230,7 +230,6 @@ module WeatherWeb
       end
       curr_fav = Favorites.where(:users_id => "#{id}").limit(10)
       count = 1
-      puts curr_fav
       forecast_fav = []
       forecast = @five_day.five_day_data(curr_fav,(Date.today))
       all_days = @parser.add_icon(forecast)
@@ -281,22 +280,11 @@ module WeatherWeb
     end
 
     delete '/api/remove_favorite' do
-      params['ids'].each do |id|
-        puts id
-      end
-=begin
-      fav_to_del = params
-      favorites = Favorites.where(users_id: current_user.id)
-      favorites.each do |fav|
-        if fav.city_id == fav_to_del
-          Favorites.destroy(fav.id)
-        end
-      end
-      session[:msg] = 'City removed successfully'
-      redirect '/favorites'
-=end
+      favorite = Favorites.where(users_id: params['user_id']).where(city_id: params['id'])
+      favorite.each{|fav| Favorites.destroy(fav.id)}
+      data = {:response => 'Removed'}.to_json
+      data
     end
-
   end
 end
 

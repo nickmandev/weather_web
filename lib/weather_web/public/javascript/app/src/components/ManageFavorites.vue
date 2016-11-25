@@ -6,16 +6,14 @@
             </div>
             <ul class="list-group">
                 <li class="list-group-item" v-for="fav in this.$store.state.favorites">
-                    {{fav.name}}  <input type="checkbox" v-model="favId" :value="fav.city_id" v-if="remove">
+                    {{fav.name}}
+                    <button class="glyphicon glyphicon-remove btn-defaut pull-right" @click="removeCity(fav)">
+
+                    </button>
                 </li>
             </ul>
             <div class="panel-footer">
-                <button class="btn btn-default" @click="searchModal"> Add City </button>
-                <button class="btn btn-default" @click="toggleRemove"> Remove City </button>
-            </div>
-            <div class="alert alert-warning" v-if="favId.length">
-                <span> Are you sure you want to remove {{ favId.length}} city/s ?</span>
-                <button class="btn btn-warning" @click="removeCity"  v-if="favId.length"> Remove</button>
+                <modal></modal>
             </div>
         </div>
     </div>
@@ -24,26 +22,23 @@
 </style>
 <script>
 import auth from '../auth/auth.js'
-
+import Modal from '../components/Modal.vue'
 export default{
     name: "manage-favorites",
     data: function(){
         return{
-            favId: [],
-            remove: false
+
         }
     },
     methods:{
-        removeCity(){
-            this.$http.delete('http://localhost:9292/api/remove_favorite', {params:{"ids":this.favId}}, {emulateJSON: true}).then(function(data){
-                console.log("true")
+        removeCity: function(obj){
+            var user_id = this.$store.state.current_user['id']
+            this.$http.delete('http://localhost:9292/api/remove_favorite',
+            {params:{"id":obj['city_id'], "user_id": user_id}}, {emulateJSON: true}).then(function(data){
+                this.$store.commit('removeFavorite', obj)
             }),(response)=>{
                 console.log("fail")
             }
-        },
-        toggleRemove(){
-            this.remove = !this.remove
-            console.log(this.remove)
         },
         searchModal(){
             console.log("Search Modal pressed")
@@ -54,6 +49,9 @@ export default{
             console.log(this.favId)
         }
 
+    },
+    components:{
+        Modal
     }
 
 }
