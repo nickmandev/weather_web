@@ -1,68 +1,70 @@
 <template>
-    <div>
-    <script type="text/x-template" id="modal-template">
+<div id="modal">
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-           <div class="modal-header">
-            <slot name="header">
-              Enter a city name:
-            </slot>
-          </div>
-
+            <div class="modal-header">
+                <button class="btn btn-default btn-xs modal-default-button" @click="$emit('close')">X</button>
+            </div>
           <div class="modal-body">
-            <slot name="body">
-              <input type="text" v-model="cityName">
-              <button class="btn btn-default btn-xs" @click="searchCity(cityName)">Search</button>
-            </slot>
+              <input type="text" class="form-control" placeholder="Press Enter to search..." v-model="cityName" @keyup.enter="searchCity">
+              <ul class="list-group" v-show="results">
+                <li class="list-group-item" v-for="res in results">
+                    <h4> {{res.city_name}}, {{res.country}}, Lat: {{res.latitude}}, Long: {{res.longitude}}
+                        <span class="glyphicon glyphicon-plus pull-right" @click="addCity(res)"></span>
+                    </h4>
+                </li>
+              </ul>
           </div>
 
           <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button class="btn btn-default btn-xs" @click="$emit('close')">
-                Close
-              </button>
-            </slot>
+            <div name="footer">
+            </div>
           </div>
         </div>
       </div>
     </div>
   </transition>
-</script>
-    <div id="app">
-        <button id="show-modal" class="btn btn-default" @click="showModal = true">Add City</button>
-        <modal v-if="showModal" @close="showModal = false">
-
-        </modal>
-    </div>
-    </div>
+</div>
 </template>
 
 <script>
+import auth from '../auth/auth.js'
     export default{
+        name: 'modal',
+        template: '#modal',
         data: function(){
             return{
-                showModal: false,
-                cityName: ''
+                cityName:'',
+                results:[]
             }
         },
         methods:{
-            searchCity: function(city){
+            searchCity: function(){
+                var city = this.cityName
+                this.$http.get('http://localhost:9292/api/city',{params:{'city': city}}).then(function(data){
+                    var parsed = JSON.parse(data.body)
+                    this.results = parsed['citys']
+                }),(promise)=>{
+                    console.log(promise)
+                }
+            },
+            addCity: function(city){
+                var param = {'city': city, 'curr_user': this.$store.state.current_user}
+                this.$http.put('http://localhost:9292/api/update_favorites', param).then(function(data){
+                   this.$store.commit('populateFavorites', JSON.parse(data.body))
+                }),(promise)=>{
+                    console.log(false)
+                }
+            }
 
-            }
         },
-        components:{
-            'modal': {
-                template: "#modal-template"
-            }
-        }
     }
 </script>
 <style>
   modal-mask {
-  position: fixed;
+  position: center;
   z-index: 9998;
   top: 0;
   left: 0;
@@ -75,12 +77,12 @@
 
 .modal-wrapper {
   display: table-cell;
-  vertical-align: middle;
+  vertical-align: center;
 }
 
 .modal-container {
-  width: 300px;
-  margin: 0px auto;
+  width: 600px;
+  margin-left: 15px;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
@@ -96,6 +98,7 @@
 
 .modal-body {
   margin: 20px 0;
+  width: 100%;
 }
 
 .modal-default-button {

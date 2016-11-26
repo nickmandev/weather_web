@@ -256,33 +256,45 @@ module WeatherWeb
       data = {:forecastFavorites => ordered_results, :favorites => curr_fav}.to_json
       data
     end
-=begin
-    get '/favorites' do
-      erb :favorites
-    end
-=end
 
-    post '/favorites' do
-      new_fav = Favorites.new(params[:fav])
-      if !new_fav.check_if_exist(current_user.id, params[:fav][:city_id])
-        new_fav.save
-        redirect '/'
-      elsif new_fav.check_if_exist(current_user.id, params[:fav][:city_id])
-        redirect '/error',  error_message('This city is already in Favorites.')
-      else
-        begin
-          raise StandardError
-        rescue StandardError
-          error_message("There's a problem! With the database.")
-          redirect '/error'
+    get '/api/city' do
+      city = params[:city]
+      city_list = CityList.new
+      result = {:citys => city_list.find_city_by_name(city)}
+      result.to_json
+    end
+
+
+    put '/api/update_favorites' do
+      fav_id = ''
+      curr_user = ''
+      request.body.each do |req|
+        hash = JSON.parse(req, :symbolize_names => true)
+        fav_id = hash[:city]
+        curr_user = hash[:curr_user][:id]
+      end
+      new_fav = Favorites.new(attributes={
+          users_id: curr_user,
+          name: fav_id[:city_name],
+          city_id: fav_id[:city_id]
+      })
+      user_favorites = Favorites.where(users_id: curr_user)
+      user_favorites.each do |fav|
+        if fav.city_id.to_i != fav_id[:city_id].to_i
+          new_fav.save
+
+        else
+          puts 'Has'
         end
       end
+      data = Favorites.where(users_id: curr_user).to_json
+      data
     end
 
     delete '/api/remove_favorite' do
       favorite = Favorites.where(users_id: params['user_id']).where(city_id: params['id'])
       favorite.each{|fav| Favorites.destroy(fav.id)}
-      data = {:response => 'Removed'}.to_json
+      data = Favorites.where(users_id: params['user_id']).to_json
       data
     end
   end

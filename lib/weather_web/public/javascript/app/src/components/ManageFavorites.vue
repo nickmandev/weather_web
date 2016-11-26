@@ -13,8 +13,11 @@
                 </li>
             </ul>
             <div class="panel-footer">
-                <modal></modal>
+                <button class="btn btn-default" @click="modal">Add City</button>
+
             </div>
+            <modal v-if="showModal" @close="showModal = false">
+            </modal>
         </div>
     </div>
 </template>
@@ -27,7 +30,7 @@ export default{
     name: "manage-favorites",
     data: function(){
         return{
-
+            showModal:false
         }
     },
     methods:{
@@ -35,14 +38,16 @@ export default{
             var user_id = this.$store.state.current_user['id']
             this.$http.delete('http://localhost:9292/api/remove_favorite',
             {params:{"id":obj['city_id'], "user_id": user_id}}, {emulateJSON: true}).then(function(data){
-                this.$store.commit('removeFavorite', obj)
+                this.$store.commit('populateFavorites', JSON.parse(data.body))
             }),(response)=>{
                 console.log("fail")
             }
         },
-        searchModal(){
-            console.log("Search Modal pressed")
-        }
+        modal(){
+            this.showModal = true
+            console.log(this.showModal)
+        },
+
     },
     watch: {
         favId: function(){
@@ -52,6 +57,7 @@ export default{
     },
     components:{
         Modal
+
     }
 
 }
