@@ -17,7 +17,7 @@ module WeatherWeb
       json = common.get_data(city_id,type_of_forecast)
       cache.update_attributes(
           :city_name  => json[:name],
-          :temp       => json[:main][:temp].to_i,
+          :temp       => json[:main][:temp],
           :weather    => json[:weather][0][:description].capitalize
       )
     end

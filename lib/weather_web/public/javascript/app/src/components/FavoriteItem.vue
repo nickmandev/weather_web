@@ -40,11 +40,17 @@ export default{
             this.hide = false
         },
         getFavorites(){
-            this.forecast = this.$store.state.forecast
-            this.hide = true
-            this.show = true
+            var curr_user = this.$store.state.current_user.id
+            this.$http.get('http://localhost:9292/api/forecast',{params: {"id":curr_user}} ).then(function(data){
+               this.forecast = data.body['forecastFavorites']
+               this.show = true
+               this.hide = true
+            }),(promise)=>{
+                console.log(response)
+            }
         }
     },
+
 
 
 }

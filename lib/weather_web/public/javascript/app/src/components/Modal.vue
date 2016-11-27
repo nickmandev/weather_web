@@ -6,6 +6,8 @@
         <div class="modal-container">
             <div class="modal-header">
                 <button class="btn btn-default btn-xs modal-default-button" @click="$emit('close')">X</button>
+                <h4>Type the name of the city you want to add to Favorites, then click on the
+                <span class="glyphicon glyphicon-plus"></span> to add it.</h4>
             </div>
           <div class="modal-body">
               <input type="text" class="form-control" placeholder="Press Enter to search..." v-model="cityName" @keyup.enter="searchCity">
