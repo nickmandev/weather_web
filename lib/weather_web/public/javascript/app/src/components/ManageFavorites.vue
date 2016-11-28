@@ -38,7 +38,7 @@ export default{
             var user_id = this.$store.state.current_user['id']
             this.$http.delete('http://localhost:9292/api/remove_favorite',
             {params:{"id":obj['city_id'], "user_id": user_id}}, {emulateJSON: true}).then(function(data){
-                this.$store.commit('populateFavorites', JSON.parse(data.body))
+                this.$store.commit('setFavorites', JSON.parse(data.body))
             }),(response)=>{
                 console.log("fail")
             }

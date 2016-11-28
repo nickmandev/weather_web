@@ -55,7 +55,7 @@ import auth from '../auth/auth.js'
             addCity: function(city){
                 var param = {'city': city, 'curr_user': this.$store.state.current_user}
                 this.$http.put('http://localhost:9292/api/update_favorites', param).then(function(data){
-                   this.$store.commit('populateFavorites', JSON.parse(data.body))
+                   this.$store.commit('setFavorites', JSON.parse(data.body))
                 }),(promise)=>{
                     console.log(false)
                 }
