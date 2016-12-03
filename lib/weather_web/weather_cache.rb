@@ -5,10 +5,10 @@ module WeatherWeb
     def cache_it(data, city_id)
       parser = DataParser.new
       parsed = parser.single_hash(data)
-      new = WeatherCache.create(attributes={
+      new = WeatherCache.new(attributes={
           city_name:  parsed[:name],
           temp:       parsed[:temp],
-          weather:    parsed[:weather],
+          weather:    parsed[:weather_type],
           city_id:    city_id})
       if new[:city_name].nil?
         new.destroy!
@@ -23,6 +23,7 @@ module WeatherWeb
       parser = DataParser.new
       cache_record = WeatherCache.find_by(:city_id => record)
       parsed_record = parser.cached_result(cache_record)
+      parsed_record
     end
   end
 end
