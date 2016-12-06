@@ -161,19 +161,23 @@ module WeatherWeb
         username = hash[:username]
         password = hash[:password]
       end
-      user = User.new(attributes={
-          username: username,
-          password: password
-      })
-      if user.save
-        session[:user_id] = user.id
-      else
-        begin
-          raise ArgumentError
-        rescue ArgumentError
-          puts "There's a problem!"
+      if username.length > 6 && password.length > 6
+        user = User.new(attributes={
+            username: username,
+            password: password
+        })
+        if user.save
+          session[:user_id] = user.id
+        else
+          data = {:message => "Something wrong with the database try again later."}.to_json
+          data
         end
+      else
+        data = {:message => "Username/Password must be longer than 6 symbols"}.to_json
+        data
       end
+      data = {:message => "Account created successfully."}.to_json
+      data
     end
 
 
@@ -197,7 +201,6 @@ module WeatherWeb
         data = {:token => @token,:current_user => current_user}.to_json
         data
       else
-        puts 'Wrong cred'
         data = {:error => "Account and/or Password was incorect!"}.to_json
         data
       end
