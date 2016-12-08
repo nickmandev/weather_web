@@ -289,6 +289,35 @@ module WeatherWeb
       data = Favorites.where(users_id: params['user_id']).to_json
       data
     end
+
+    get '/api/forecast_by_id' do
+      forecast = FiveDayForecast.where(:city_id => params['city_id'])
+      today = Date.today
+      arr = []
+      count = 0
+      simplified_forecast = []
+      until count == 5 do
+      forecast.each do |f|
+        if(Time.at(f.timestamp).to_date === today + count)
+          arr.push(f)
+        end
+      end
+      middle = arr.length / 2 - 1
+      daily_forecast = Hash.new
+      daily_forecast[:temp_min] = arr.first.temp_min
+      daily_forecast[:temp_max] = arr[middle].temp_max
+      daily_forecast[:date] = Date.parse(arr.first.timestamp.to_s)
+      daily_forecast[:day] = Date.parse(arr.first.timestamp.to_s).strftime('%A')
+      daily_forecast[:weather_type] = arr[middle].weather_type
+      @parser.add_icon_single(daily_forecast)
+      simplified_forecast.push(daily_forecast)
+      arr = []
+      count += 1
+      end
+      simplified_forecast
+      data = {:forecast => forecast, :simplified_forecast => simplified_forecast}.to_json
+      data
+    end
   end
 end
 
